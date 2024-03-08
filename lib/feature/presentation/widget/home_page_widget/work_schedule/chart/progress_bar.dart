@@ -50,10 +50,10 @@ class _ProgressBarState extends State<ProgressBar> {
           child: Column(
             children: [
               DropdownMenuCircular(
-                option: const Text('ALL Widget'),
-                inProgress: const Text('Open Widget'),
-                complete: const Text('In Progress Widget'),
-                overdue: const Text('Overdue Widget'),
+                option: const Text('ALL Machine'),
+                inProgress: const Text('Open Machine Count'),
+                complete: const Text('InProgress Machine Count '),
+                overdue: const Text('Overdue Machine COunt'),
                 widgetOptions: [
                   _buildProgressBar(300), // Complete
                   _buildProgressBar(400), // InProgress

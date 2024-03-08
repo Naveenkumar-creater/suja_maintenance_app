@@ -49,7 +49,7 @@ class CheckPointDetails extends StatefulWidget {
       this.capturedImages,
       this.pageId,
       this.acrpinspectionstatus,
-     required this.assetname});
+      required this.assetname});
 
   @override
   _CheckPointDetailsState createState() => _CheckPointDetailsState();
@@ -60,9 +60,10 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
   final TextEditingController numberController = TextEditingController();
   final InitiatePauseService initiatePauseService = InitiatePauseService();
   final ImageBase64 imageBase64 = ImageBase64();
-
+  bool isOkayButtonVisible = true;
+  bool isConfirmButtonVisible = true;
   String personName = ''; // State variable to store the personName
-
+  bool isCheckboxChecked = false;
   bool isLoading = true;
   bool isTextFieldVisible = true;
   bool isOperatorIdEntered = false;
@@ -76,7 +77,7 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
   Map<int, List<String>> userEnteredDataPoints = {};
   Map<int, List<DataEntry>> myStatefulWidgetDataMap = {};
   final GlobalKey<FormState> operatorFormKey = GlobalKey<FormState>();
-Map<int, List<Map<String, String>>> EnteredDataPoints = {};
+  Map<int, List<Map<String, String>>> EnteredDataPoints = {};
   // void pauseStatus() {
   //   initiatePauseService.initiatePause(context: context, id: widget.planId);
   // }
@@ -507,25 +508,26 @@ Map<int, List<Map<String, String>>> EnteredDataPoints = {};
             ?.add(addDatapoint); // Add this datapoint to the current checkpoint
       }
 
-for (int i = 0; i < combinedDatapoint.length; i++) {
+      for (int i = 0; i < combinedDatapoint.length; i++) {
+        final description = combinedDatapoint[i]['acrpDescription'];
+        final acrdpId = combinedDatapoint[i]['acrdpId'];
+        final editedValue = combinedDatapoint[i]['editedValue'];
 
-    final description = combinedDatapoint[i]['acrpDescription'];
-  final acrdpId = combinedDatapoint[i]['acrdpId'];
-  final editedValue = combinedDatapoint[i]['editedValue'];
+        // Check if acrdpId and editedValue are not empty and the index is within bounds
+        if (acrdpId != null && editedValue != null) {
+          final datapoint = ChecklistDataPoint(
+            amdpDatapointId: i + 1,
+            acrdpId: int.parse(acrdpId), // Convert acrdpId to integer
+            amdpDatapointDescription: description ??
+                "", // Use amdpDatapointDescription from datapointDescriptions list
+            acrdpDatapointValue:
+                editedValue.isEmpty?"0":editedValue, // Use editedValue as acrdpDatapointValue
+          );
 
-  // Check if acrdpId and editedValue are not empty and the index is within bounds
-  if (acrdpId != null && editedValue != null) {
-    final datapoint = ChecklistDataPoint(
-      amdpDatapointId: i + 1,
-      acrdpId: int.parse(acrdpId), // Convert acrdpId to integer
-      amdpDatapointDescription:description ?? "", // Use amdpDatapointDescription from datapointDescriptions list
-      acrdpDatapointValue: editedValue, // Use editedValue as acrdpDatapointValue
-    );
-
-        checkpoint.datapoints
-            ?.add(datapoint); // Add this datapoint to the current checkpoint
+          checkpoint.datapoints
+              ?.add(datapoint); // Add this datapoint to the current checkpoint
+        }
       }
-}
       checklistRequest.checkPoints
           ?.add(checkpoint); // Add the checkpoint to the checklist
     }
@@ -693,7 +695,6 @@ for (int i = 0; i < combinedDatapoint.length; i++) {
     final checklist = responseData?.getChecklistDetails ?? [];
 
     List<TextEditingController> datapointControllers = [];
-   
 
     // List imageFiles = [];
 
@@ -760,13 +761,20 @@ for (int i = 0; i < combinedDatapoint.length; i++) {
     // descriptionController.text = initialData['description'];
 
     List<DataEntry> localDataEntries = myStatefulWidgetDataMap[index] ?? [];
-    List<String> acrdpValues=[];
-    List<String>acrdDescription=[];
+    List<String> acrdpValues = [];
+    List<String> acrdDescription = [];
 
     void onMyStatefulWidgetDataChanged(int index, List<DataEntry> newData) {
       setState(() {
         myStatefulWidgetDataMap[index] = newData;
       });
+    }
+
+    bool isValidInteger(String value) {
+      if (value == null) return false;
+      final trimmedValue = value.trim();
+      if (trimmedValue.isEmpty) return false;
+      return double.parse(trimmedValue) != null;
     }
 
     showDialog(
@@ -827,6 +835,8 @@ for (int i = 0; i < combinedDatapoint.length; i++) {
                               },
                               decoration: const InputDecoration(
                                 labelText: 'Enter Notes',
+                                     floatingLabelBehavior:
+                                                                                  FloatingLabelBehavior.never,
                                 contentPadding:
                                     EdgeInsets.all(defaultPadding * 3),
                                 border: OutlineInputBorder(
@@ -860,313 +870,515 @@ for (int i = 0; i < combinedDatapoint.length; i++) {
                       const SizedBox(
                         height: defaultPadding,
                       ),
-                    Consumer<DataPointProvider>(
-  builder: (context, DetailsProvider, _) {
-    final response = DetailsProvider.user?.responseData;
-    final datapoint = response?.checklistDatapointsList;
-    acrdDescription=List.generate(datapoint?.length ?? 0, (index) {
-      return datapoint![index]?.amdpDatapointDescription.toString() ?? '';// Return acrdpId as String or an empty string if datapoint[index] is null
-    });
-  
-     acrdpValues = List.generate(datapoint?.length ?? 0, (index) {
-      return datapoint![index]?.acrdpId.toString() ?? ''; // Return acrdpId as String or an empty string if datapoint[index] is null
-    });
+                      Consumer<DataPointProvider>(
+                        builder: (context, DetailsProvider, _) {
+                          final response = DetailsProvider.user?.responseData;
+                          final datapoint = response?.checklistDatapointsList;
+                          acrdDescription =
+                              List.generate(datapoint?.length ?? 0, (index) {
+                            return datapoint![index]
+                                    ?.amdpDatapointDescription
+                                    .toString() ??
+                                ''; // Return acrdpId as String or an empty string if datapoint[index] is null
+                          });
 
-    datapointControllers = List.generate(
-      datapoint?.length ?? 0,
-      (index) {
-        if (index < datapoint!.length) {
-          final initialValue = datapoint[index].datapointValue.toString();
-          return TextEditingController(text: initialValue);
-        } else {
-          // Handle the case where dataPointValues is shorter than datapoint
-          return TextEditingController();
-        }
-      },
-    );
+                          acrdpValues =
+                              List.generate(datapoint?.length ?? 0, (index) {
+                            return datapoint![index]?.acrdpId.toString() ??
+                                ''; // Return acrdpId as String or an empty string if datapoint[index] is null
+                          });
 
-    // Update the TextEditingController objects with locally stored values
-    if (userEnteredDataPoints.containsKey(index)) {
-      final List<String> storedValues = userEnteredDataPoints[index]!;
-      for (int i = 0; i < storedValues.length; i++) {
-        if (i < datapointControllers.length) {
-          // Update existing TextEditingController
-          datapointControllers[i].text = storedValues[i];
-        } else {
-          // Create and add a new TextEditingController for missing values
-          datapointControllers.add(TextEditingController(text: storedValues[i]));
-        }
-      }
-    }
-
-    return Column(
-      children: [
-        if (datapoint?.length != 0)
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text("Data Point:"),
-              Card(
-                elevation: 5,
-                shadowColor: Colors.black,
-                child: SizedBox(
-                  height: 350,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: 10,
-                          ),
-
-                          Row(
-                            children: [
-                              SizedBox(
-                                width: 180,
-                                child: Text(
-                                  "Spec Name",
-                                  style: TextStyle(
-                                    fontSize: 17,
-                                    color: Colors.blue,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 150,
-                                child: Text(
-                                  "Spec Value",
-                                  style: TextStyle(
-                                    fontSize: 17,
-                                    color: Colors.blue,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 190,
-                                child: Text(
-                                  "Spec Actual Value",
-                                  style: TextStyle(
-                                    fontSize: 17,
-                                    color: Colors.blue,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: datapoint?.length ?? 0,
-                            itemBuilder: (context, index) {
-                              final item = datapoint?[index];
-
-                              return Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Row(
-                                    children: [
-                                      Column(
-                                        children: [
-                                          SizedBox(
-                                            width: defaultPadding,
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: defaultPadding,
-                                  ),
-                                  Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 220,
-                                        child: Text("${item?.amdpDatapointDescription}  :"),
-                                      ),
-                                      if (item!.amtsLowerRangeValue.isNotEmpty)
-                                        SizedBox(
-                                          width: 100,
-                                          child: Row(
-                                            children: [
-                                              Text("${item?.amtsLowerRangeValue}"),
-                                              const Text("-"),
-                                              Text("${item?.amtsUpperRangeValue}"),
-                                            ],
-                                          ),
-                                        )
-                                      else
-                                        SizedBox(
-                                          width: 100,
-                                          child: Text("${item?.amtsValue}"),
-                                        ),
-                                      SizedBox(
-                                        width: 20,
-                                      ),
-                                      const Text(":"),
-                                      const SizedBox(
-                                        width: 8,
-                                      ),
-                                      SizedBox(
-                                        width: 150,
-                                        height: 60, // Set the desired height here
-                                        child: TextFormField(
-                                          controller: datapointControllers[index],
-                                          onChanged: (value) {
-                                            if (index >= 0 && index < dataPointValues.length) {
-                                              dataPointValues[index] = value;
-                                            }
-                                          },
-                                          decoration: InputDecoration(
-                                            labelText: 'Enter Value',
-                                            contentPadding: EdgeInsets.all(defaultPadding),
-                                            border: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                color: Colors.yellow,
-                                                width: 1.0,
-                                              ),
-                                            ),
-                                            hintText: dataPointValues.isNotEmpty ? 'Enter Value' : '',
-                                            labelStyle: TextStyle(color: Colors.black),
-                                          ),
-                                          validator: (value) {
-                                            if (selectedDropdownValues[index].first != "Passed" && (value == null || value.isEmpty)) {
-                                              return 'Required Field';
-                                            }
-                                            return null;
-                                          },
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              );
+                          datapointControllers = List.generate(
+                            datapoint?.length ?? 0,
+                            (index) {
+                              if (index < datapoint!.length) {
+                                final initialValue =
+                                    datapoint[index].datapointValue.toString();
+                                return TextEditingController(
+                                    text: initialValue);
+                              } else {
+                                // Handle the case where dataPointValues is shorter than datapoint
+                                return TextEditingController();
+                              }
                             },
-                          ),
-                        ],
+                          );
+
+                          // Update the TextEditingController objects with locally stored values
+                          if (userEnteredDataPoints.containsKey(index)) {
+                            final List<String> storedValues =
+                                userEnteredDataPoints[index]!;
+                            for (int i = 0; i < storedValues.length; i++) {
+                              if (i < datapointControllers.length) {
+                                // Update existing TextEditingController
+                                datapointControllers[i].text = storedValues[i];
+                              } else {
+                                // Create and add a new TextEditingController for missing values
+                                datapointControllers.add(TextEditingController(
+                                    text: storedValues[i]));
+                              }
+                            }
+                          }
+
+                          return Column(
+                            children: [
+                              if (datapoint?.length != 0)
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text("Data Point:"),
+                                    Card(
+                                      elevation: 5,
+                                      shadowColor: Colors.black,
+                                      child: SizedBox(
+                                        height: 350,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: SingleChildScrollView(
+                                            child: Column(
+                                              children: [
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    SizedBox(
+                                                      width: 180,
+                                                      child: Text(
+                                                        "Parameter",
+                                                        style: TextStyle(
+                                                          fontSize: 17,
+                                                          color: Colors.blue,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 150,
+                                                      child: Text(
+                                                        "Specification",
+                                                        style: TextStyle(
+                                                          fontSize: 17,
+                                                          color: Colors.blue,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 60,
+                                                    ),
+                                                    SizedBox(
+                                                      width: 100,
+                                                      child: Text(
+                                                        "Actual",
+                                                        style: TextStyle(
+                                                          fontSize: 17,
+                                                          color: Colors.blue,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                ListView.builder(
+                                                  physics:
+                                                      const NeverScrollableScrollPhysics(),
+                                                  shrinkWrap: true,
+                                                  itemCount:
+                                                      datapoint?.length ?? 0,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    final item =
+                                                        datapoint?[index];
+                                                    final lowerRangeValue = item
+                                                        ?.amtsLowerRangeValue;
+                                                    final upperRangeValue = item
+                                                        ?.amtsUpperRangeValue;
+
+                                                    return Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                      
+                                                        const SizedBox(
+                                                          height:
+                                                              defaultPadding,
+                                                        ),
+                                                        SizedBox(
+                                                          height: 80,
+                                                          child: Row(
+                                                            
+                                                            children: [
+                                                              SizedBox(
+                                                                width: 220,
+                                                                child: Text(
+                                                                    "${item?.amdpDatapointDescription}  :"),
+                                                              ),
+                                                              if (item!
+                                                                  .amtsLowerRangeValue
+                                                                  .isNotEmpty)
+                                                                SizedBox(
+                                                                  width: 100,
+                                                                  child: Row(
+                                                                    children: [
+                                                                      Text(
+                                                                          "${item?.amtsLowerRangeValue}"),
+                                                                      const Text(
+                                                                          "-"),
+                                                                      Text(
+                                                                          "${item?.amtsUpperRangeValue}"),
+                                                                    ],
+                                                                  ),
+                                                                )
+                                                              else
+                                                                SizedBox(
+                                                                  width: 100,
+                                                                  child: Text(
+                                                                      "${item?.amtsValue}"),
+                                                                ),
+                                                              SizedBox(
+                                                                width: 20,
+                                                              ),
+                                                              const Text(":"),
+                                                              const SizedBox(
+                                                                width: 8,
+                                                              ),
+                                                              SizedBox(
+                                                                width: 150,
+                                                                height:
+                                                                    70, // Set the desired height here
+                                                                child:
+                                                                    Column(
+                                                                      children: [
+                                                                        Expanded(
+                                                                          child: TextFormField(
+                                                                            controller:
+                                                                                datapointControllers[
+                                                                                    index],
+                                                                            onChanged:
+                                                                                (newValue) {
+                                                                              setState(
+                                                                                  () {
+                                                                                if (index >= 0 &&
+                                                                                    index < dataPointValues.length) {
+                                                                                  dataPointValues[index] =
+                                                                                      newValue;
+                                                                                }
+                                                                              });
+                                                                            },
+                                                                            decoration:
+                                                                                InputDecoration(
+                                                                              labelText:
+                                                                                  'Enter value',
+                                                                              floatingLabelBehavior:
+                                                                                  FloatingLabelBehavior.never,
+
+                                                                              contentPadding:
+                                                                                  EdgeInsets.all(defaultPadding),
+                                                                                
+                                                                              enabledBorder:
+                                                                                  OutlineInputBorder(
+                                                                                borderSide:
+                                                                                    BorderSide(
+                                                                                  color: datapointControllers[index].text.isEmpty
+                                                                                      ? Colors.grey
+                                                                                      : ((lowerRangeValue != null && upperRangeValue != null) && isValidInteger(lowerRangeValue) && isValidInteger(upperRangeValue) && (int.tryParse(lowerRangeValue) ?? 0) <= (int.tryParse(datapointControllers[index].text) ?? 0) && (int.tryParse(upperRangeValue!) ?? 0) >= (int.tryParse(datapointControllers[index].text) ?? 0)) || (datapointControllers[index].text == item!.amtsValue) // Compare entered value with expected value
+                                                                                          ? Colors.black
+                                                                                          : Colors.orange, // Border color when focused
+                                                                                  width:
+                                                                                      2.0, // Border width when focused
+                                                                                ),
+                                                                              ),
+                                                                              focusedBorder:
+                                                                                  OutlineInputBorder(
+                                                                                borderSide:
+                                                                                    BorderSide(
+                                                                                  color: datapointControllers[index].text.isEmpty
+                                                                                      ? Colors.grey
+                                                                                      : ((lowerRangeValue != null && upperRangeValue != null) && isValidInteger(lowerRangeValue) && isValidInteger(upperRangeValue) && (int.tryParse(lowerRangeValue) ?? 0) <= (int.tryParse(datapointControllers[index].text) ?? 0) && (int.tryParse(upperRangeValue!) ?? 0) >= (int.tryParse(datapointControllers[index].text) ?? 0)) || (datapointControllers[index].text == item!.amtsValue) // Compare entered value with expected value
+                                                                                          ? Colors.black
+                                                                                          : Colors.orange,
+                                                                                                                                            
+                                                                                  width:
+                                                                                      2.0, // Border width when focused
+                                                                                ),
+                                                                              ),
+                                                                              hintText: dataPointValues.isNotEmpty
+                                                                                  ? 'Enter Value'
+                                                                                  : '',
+                                                                              labelStyle:
+                                                                                  TextStyle(
+                                                                                color: datapointControllers[index].text.isEmpty
+                                                                                    ? Colors.grey
+                                                                                    : ((lowerRangeValue != null && upperRangeValue != null) && isValidInteger(lowerRangeValue) && isValidInteger(upperRangeValue) && (int.tryParse(lowerRangeValue) ?? 0) <= (int.tryParse(datapointControllers[index].text) ?? 0) && (int.tryParse(upperRangeValue!) ?? 0) >= (int.tryParse(datapointControllers[index].text) ?? 0)) || ((isValidInteger(item!.amtsValue)) && (isValidInteger(datapointControllers[index].text) ?? false) && (int.tryParse(item!.amtsValue) ?? 0) == (int.tryParse(datapointControllers[index].text) ?? 0))
+                                                                                        ? Colors.black
+                                                                                        : Colors.orange,
+                                                                              ),
+                                                                            ),
+                                                                            validator:
+                                                                                (value) {
+                                                                              // Validate other conditions, if any
+                                                                              if ((lowerRangeValue != null && lowerRangeValue.isNotEmpty) ||
+                                                                                  (upperRangeValue != null &&
+                                                                                      upperRangeValue.isNotEmpty) ||
+                                                                                  (item.amtsValue != null && item.amtsValue.isNotEmpty)) {
+                                                                                if 
+                                                                                    (value == null || value.isEmpty) {
+                                                                                  return 'Required Field';
+                                                                                }
+                                                                              }
+                                                                              return null;
+                                                                            },
+                                                                          ),
+                                                                        ),
+                                                                        datapointControllers[index]
+                                                                                .text
+                                                                                .isEmpty
+                                                                            ? Text(
+                                                                                "")
+                                                                            : (((lowerRangeValue != null && upperRangeValue != null) && isValidInteger(lowerRangeValue) && isValidInteger(upperRangeValue) && (int.tryParse(lowerRangeValue) ?? 0) <= (int.tryParse(datapointControllers[index].text) ?? 0) && (int.tryParse(upperRangeValue!) ?? 0) >= (int.tryParse(datapointControllers[index].text) ?? 0)) ||
+                                                                                    (datapointControllers[index].text == item!.amtsValue) // Compare entered value with expected value
+                                                                                )
+                                                                                ? Text('')
+                                                                                : Text(
+                                                                                    "Value out of Spec",
+                                                                                    style: TextStyle(color: Colors.orange, fontSize: 12),
+                                                                                  ),
+                                                                      ],
+                                                                    ),
+                                                              ),
+                                                              datapointControllers[
+                                                                          index]
+                                                                      .text
+                                                                      .isEmpty
+                                                                  ? Text("")
+                                                                  : (((lowerRangeValue != null &&
+                                                                                  upperRangeValue != null) &&
+                                                                              isValidInteger(lowerRangeValue) &&
+                                                                              isValidInteger(upperRangeValue) &&
+                                                                              (int.tryParse(lowerRangeValue) ?? 0) <= (int.tryParse(datapointControllers[index].text) ?? 0) &&
+                                                                              (int.tryParse(upperRangeValue!) ?? 0) >= (int.tryParse(datapointControllers[index].text) ?? 0)) ||
+                                                                          (datapointControllers[index].text == item!.amtsValue) // Compare entered value with expected value
+                                                                      )
+                                                                      ? Text('')
+                                                                      : Icon(
+                                                                          Icons
+                                                                              .warning,
+                                                                          color: Colors
+                                                                              .orange,
+                                                                        ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    );
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                )
+                              else
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text('Data Points        :'),
+                                    const SizedBox(
+                                      width: 8,
+                                    ),
+                                    Expanded(child: Text("No Data Points"))
+                                  ],
+                                ),
+                            ],
+                          );
+                        },
                       ),
-                    ),
-                  ),
-                ),
-              )
-            ],
-          )
-        else
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text('Data Points        :'),
-              const SizedBox(
-                width: 8,
-              ),
-              Expanded(child: Text("No Data Points"))
-            ],
-          ),
-      ],
-    );
-  },
-),
-const SizedBox(
-  height: defaultPadding,
-),
-Expanded(
-  child: Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    crossAxisAlignment: CrossAxisAlignment.end,
-    children: [
-      ElevatedButton(
-        onPressed: () {
-          // Store the data in a map
-          if (formKey.currentState!.validate()) {
-            final Map<String, dynamic> data = {
-              'note': noteController.text,
-              // 'description': descriptionController.text ?? "",
-              // 'dataPoints': dataPointValues,
-              'images': capturedImages, // Store captured images
-            };
+                      //  CheckboxListTile(
+                      //                             title: Text(
+                      //                                 "Value out of Spec"), // Checkbox label
+                      //                             value:
+                      //                                 isCheckboxChecked, // Checkbox state
+                      //                             onChanged: (newValue) {
+                      //                               setState(() {
+                      //                                 isCheckboxChecked =
+                      //                                     newValue!;
+                      //                               });
+                      //                             },
+                      //                           ),
 
-            popupData[index] = data;
+                      Expanded(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            if (isConfirmButtonVisible)
+                              ElevatedButton(
+                                onPressed: () {
+                                  if (formKey.currentState!.validate()) {
+                                    isConfirmButtonVisible = false;
 
-            // Get edited values from the text controllers
-            List<String> editedValues = datapointControllers.map((controller) => controller.text).toList();
-          
-  userEnteredDataPoints[index] = editedValues;
-        
-            List<Map<String, String>> combinedValues = [];
-            for (int i = 0; i < acrdDescription.length; i++) {
-              Map<String, String> valuePair = {
-                'acrpDescription':acrdDescription[i],
-                'acrdpId': acrdpValues[i],
-                'editedValue': i < editedValues.length ? editedValues[i] : '', // Use edited value if available, otherwise use an empty string
-              };
-              combinedValues.add(valuePair);
-            }
-  EnteredDataPoints[index] = combinedValues;
-            myStatefulWidgetDataMap[index] = localDataEntries;
+                                    final Map<String, dynamic> data = {
+                                      'note': noteController.text,
+                                      'images':
+                                          capturedImages, // Store captured images
+                                    };
 
-            Navigator.of(context).pop();
-          }
-        },
-        child: const Text(
-          "Okay",
-          style: TextStyle(
-            fontSize: 13,
-          ),
-        ),
-      ),
+                                    popupData[index] = data;
+
+                                    // Get edited values from the text controllers
+                                    List<String> editedValues =
+                                        datapointControllers
+                                            .map(
+                                                (controller) => controller.text)
+                                            .toList();
+
+                                    userEnteredDataPoints[index] = editedValues;
+
+                                    List<Map<String, String>> combinedValues =
+                                        [];
+                                    for (int i = 0;
+                                        i < acrdDescription.length;
+                                        i++) {
+                                      Map<String, String> valuePair = {
+                                        'acrpDescription': acrdDescription[i],
+                                        'acrdpId': acrdpValues[i],
+                                        'editedValue': i < editedValues.length
+                                            ? editedValues[i]
+                                            : "", // Use edited value if available, otherwise use an empty string
+                                      };
+                                      combinedValues.add(valuePair);
+                                    }
+                                    EnteredDataPoints[index] = combinedValues;
+                                    myStatefulWidgetDataMap[index] =
+                                        localDataEntries;
+                                    _showPopup(context, index);
+                                    // Navigator.of(context)
+                                    //     .pop();
+                                  }
+                                },
+                                child: const Text(
+                                  "Okay",
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                  ),
+                                ),
+                              ),
+                            const SizedBox(
+                              width: 8,
+                            ),
+                            if (!isConfirmButtonVisible)
+                              ElevatedButton(
+                                onPressed: () {
+                                  if (formKey.currentState!.validate()) {
+                                    isConfirmButtonVisible = false;
+                                    final Map<String, dynamic> data = {
+                                      'note': noteController.text,
+                                      'images':
+                                          capturedImages, // Store captured images
+                                    };
+
+                                    popupData[index] = data;
+
+                                    // Get edited values from the text controllers
+                                    List<String> editedValues =
+                                        datapointControllers
+                                            .map(
+                                                (controller) => controller.text)
+                                            .toList();
+
+                                    userEnteredDataPoints[index] = editedValues;
+
+                                    List<Map<String, String>> combinedValues =
+                                        [];
+                                    for (int i = 0;
+                                        i < acrdDescription.length;
+                                        i++) {
+                                      Map<String, String> valuePair = {
+                                        'acrpDescription': acrdDescription[i],
+                                        'acrdpId': acrdpValues[i],
+                                        'editedValue': i < editedValues.length
+                                            ? editedValues[i]
+                                            : "", // Use edited value if available, otherwise use an empty string
+                                      };
+                                      combinedValues.add(valuePair);
+                                    }
+                                    EnteredDataPoints[index] = combinedValues;
+                                    myStatefulWidgetDataMap[index] =
+                                        localDataEntries;
+
+                                    // _showPopup(context, index);
+                                    Navigator.of(context).pop();
+                                    Navigator.of(context).pop();
+                                    isConfirmButtonVisible = true;
+
+                                    // Navigator.of(context)
+                                    //     .pop();
+                                  }
+                                },
+                                child: Text("Confirm"),
+                              ),
+                            // Confirm button for the checkbox
 
                             const SizedBox(
                               width: 8,
                             ),
-                            ElevatedButton(
-                              onPressed: () {
-                                setState(() {
-                                  // popupData.clear();
-                                  // userEnteredDataPoints.clear();
-                                  // myStatefulWidgetDataMap.clear();
+                            if (isConfirmButtonVisible)
+                              ElevatedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    // popupData.clear();
+                                    // userEnteredDataPoints.clear();
+                                    // myStatefulWidgetDataMap.clear();
 
-                                  if (selectedDropdownValues[index].first !=
-                                      "Passed") if (!formKey.currentState!.validate()) {
-                                    selectedDropdownValues[index] = [
-                                      "Select Answer"
-                                    ];
-                                  }
-                                });
+                                    if (selectedDropdownValues[index].first !=
+                                        "Passed") if (!formKey.currentState!.validate()) {
+                                      selectedDropdownValues[index] = [
+                                        "Select Answer"
+                                      ];
+                                    }
+                                  });
 
-                                final Map<String, dynamic> data = {
-                                  'note': noteController.text,
-                                  // 'description':
-                                  //     descriptionController.text ?? "",
-                                  // 'dataPoints': dataPointValues,
-                                  'images':
-                                      capturedImages, // Store captured images
-                                };
+                                  final Map<String, dynamic> data = {
+                                    'note': noteController.text,
+                                    // 'description':
+                                    //     descriptionController.text ?? "",
+                                    // 'dataPoints': dataPointValues,
+                                    'images':
+                                        capturedImages, // Store captured images
+                                  };
 
-                                popupData[index] = data;
-                                final List<String> editedValues =
-                                    datapointControllers
-                                        .map((controller) => controller.text)
-                                        .toList();
+                                  popupData[index] = data;
+                                  final List<String> editedValues =
+                                      datapointControllers
+                                          .map((controller) => controller.text)
+                                          .toList();
 
-                                userEnteredDataPoints[index] = editedValues;
+                                  userEnteredDataPoints[index] = editedValues;
 
-                                myStatefulWidgetDataMap[index] =
-                                    localDataEntries;
+                                  myStatefulWidgetDataMap[index] =
+                                      localDataEntries;
 
-                                Navigator.of(context).pop(); // Close the dialog
-                              },
-                              child: const Text(
-                                "Cancel",
-                                style: TextStyle(
-                                  fontSize: 13,
+                                  Navigator.of(context)
+                                      .pop(); // Close the dialog
+                                },
+                                child: const Text(
+                                  "Cancel",
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                  ),
                                 ),
                               ),
-                            ),
                           ],
                         ),
                       )
@@ -1184,7 +1396,7 @@ Expanded(
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
-final response = Provider.of<CheckListProvider>(context, listen: false)
+    final response = Provider.of<CheckListProvider>(context, listen: false)
         .user
         ?.responseData;
     final asset = response?.checklist ?? [];
@@ -1193,13 +1405,12 @@ final response = Provider.of<CheckListProvider>(context, listen: false)
         .user
         ?.responseData;
     final qrasset = qrresponse?.checklist ?? [];
-     final cheklistcurrentvalue = context.read<GetCheckListDetailsProvider>()
-        .user
-        ?.responseData;
-   
+    final cheklistcurrentvalue =
+        context.read<GetCheckListDetailsProvider>().user?.responseData;
+
     bool isAnySelectAnswer =
         selectedDropdownValues.any((value) => value.first == "Select Answer");
-        
+
     return Consumer<GetCheckListDetailsProvider>(
       builder: (context, getCheckListDetailsProvider, _) {
         final responseData = getCheckListDetailsProvider.user?.responseData;
@@ -1216,45 +1427,45 @@ final response = Provider.of<CheckListProvider>(context, listen: false)
           headerImage = checklist.first.headerimageurl;
         }
 
-  Widget buildImageWidget() {
-  Widget imageWidget;
-  
-  if (headerImage != null) {
-    try {
-      imageWidget = Image.network(
-        checklist!.first.headerimageurl,
-        width: 100, // Set the width as needed
-        height: 50, // Set the height as needed
-        fit: BoxFit.cover,
-        errorBuilder: (context, error, stackTrace) {
-          return Image.asset(
-            'assets/images/Suji shoie1.jpg', // Replace with the path to your placeholder image
-         width: 100, // Set the width as needed
-      height: 50,
-            fit: BoxFit.cover,
-          );
-        },
-      );
-    } catch (e) {
-      print('Error loading image: $e');
-      imageWidget = Image.asset(
-        'assets/images/Suji shoie1.jpg', // Replace with the path to your placeholder image
-        width: 50, // Set the width as needed
-        height: 30, // Set the height as needed
-        fit: BoxFit.cover,
-      );
-    }
-  } else {
-    imageWidget = Image.asset(
-      'assets/images/Suji shoie1.jpg', // Replace with the path to your placeholder image
-      width: 50, // Set the width as needed
-      height: 30, // Set the height as needed
-      fit: BoxFit.cover,
-    );
-  }
-  
-  return imageWidget;
-}
+        Widget buildImageWidget() {
+          Widget imageWidget;
+
+          if (headerImage != null) {
+            try {
+              imageWidget = Image.network(
+                checklist!.first.headerimageurl,
+                width: 100, // Set the width as needed
+                height: 50, // Set the height as needed
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Image.asset(
+                    'assets/images/Suji shoie1.jpg', // Replace with the path to your placeholder image
+                    width: 100, // Set the width as needed
+                    height: 50,
+                    fit: BoxFit.cover,
+                  );
+                },
+              );
+            } catch (e) {
+              print('Error loading image: $e');
+              imageWidget = Image.asset(
+                'assets/images/Suji shoie1.jpg', // Replace with the path to your placeholder image
+                width: 50, // Set the width as needed
+                height: 30, // Set the height as needed
+                fit: BoxFit.cover,
+              );
+            }
+          } else {
+            imageWidget = Image.asset(
+              'assets/images/Suji shoie1.jpg', // Replace with the path to your placeholder image
+              width: 50, // Set the width as needed
+              height: 30, // Set the height as needed
+              fit: BoxFit.cover,
+            );
+          }
+
+          return imageWidget;
+        }
 
         return isLoading
             ? Scaffold(
@@ -1303,34 +1514,31 @@ final response = Provider.of<CheckListProvider>(context, listen: false)
                                     height: 20,
                                   ),
                                   Text(
-                                widget.assetname ?? "",
+                                    widget.assetname ?? "",
                                     style: const TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.white,
                                     ),
                                   ),
-    //                                widget.pageId == 1?
+                                  //                                widget.pageId == 1?
 
-    // Text(
-    //                                qrasset.first.assetname??"",
-    //                                 style: const TextStyle(
-    //                                   fontSize: 20,
-    //                                   fontWeight: FontWeight.bold,
-    //                                   color: Colors.white,
-    //                                 ),
-    //                               ):  Text(
-    //                               asset.first.assetname??"",
-    //                                 style: const TextStyle(
-    //                                   fontSize: 20,
-    //                                   fontWeight: FontWeight.bold,
-    //                                   color: Colors.white,
-    //                                 ),
-    //                               ),
-      
- 
-    
-                                  
+                                  // Text(
+                                  //                                qrasset.first.assetname??"",
+                                  //                                 style: const TextStyle(
+                                  //                                   fontSize: 20,
+                                  //                                   fontWeight: FontWeight.bold,
+                                  //                                   color: Colors.white,
+                                  //                                 ),
+                                  //                               ):  Text(
+                                  //                               asset.first.assetname??"",
+                                  //                                 style: const TextStyle(
+                                  //                                   fontSize: 20,
+                                  //                                   fontWeight: FontWeight.bold,
+                                  //                                   color: Colors.white,
+                                  //                                 ),
+                                  //                               ),
+
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -1376,13 +1584,12 @@ final response = Provider.of<CheckListProvider>(context, listen: false)
                                                                       .circular(
                                                                           5))),
                                                       child: TextFormField(
-                                                        
                                                         controller:
                                                             numberController,
+                                                            
                                                         style: const TextStyle(
                                                             color:
                                                                 Colors.black),
-
                                                         validator: (value) {
                                                           if (value == null ||
                                                               value.isEmpty) {
@@ -1483,15 +1690,13 @@ final response = Provider.of<CheckListProvider>(context, listen: false)
                             widget.acrpinspectionstatus == 4)
                           Row(
                             children: [
-                              
                               SizedBox(
                                 width: 100,
                                 height: 100,
                                 child: Padding(
-                                    padding: const EdgeInsets.only(right: 16,top: 8,bottom: 8),
-                                  child: ClipOval(
-                                    child:buildImageWidget()
-                                  ),
+                                  padding: const EdgeInsets.only(
+                                      right: 16, top: 8, bottom: 8),
+                                  child: ClipOval(child: buildImageWidget()),
                                 ),
                               ),
                             ],
@@ -1507,7 +1712,11 @@ final response = Provider.of<CheckListProvider>(context, listen: false)
                                 final imageFile = widget.capturedImages?[index];
 
                                 return Padding(
-                                  padding: const EdgeInsets.only(right: 16,top: 8,bottom: 8,),
+                                  padding: const EdgeInsets.only(
+                                    right: 16,
+                                    top: 8,
+                                    bottom: 8,
+                                  ),
                                   child: ClipOval(
                                     child: Image.file(
                                       imageFile!,
@@ -1612,9 +1821,16 @@ final response = Provider.of<CheckListProvider>(context, listen: false)
                                                                 String>(
                                                               underline:
                                                                   Container(),
-                                                                value: index < selectedDropdownValues.length && selectedDropdownValues[index].isNotEmpty
-      ? selectedDropdownValues[index].first
-      : "Select Answer",
+                                                              value: index <
+                                                                          selectedDropdownValues
+                                                                              .length &&
+                                                                      selectedDropdownValues[
+                                                                              index]
+                                                                          .isNotEmpty
+                                                                  ? selectedDropdownValues[
+                                                                          index]
+                                                                      .first
+                                                                  : "Select Answer",
                                                               onChanged:
                                                                   (newValue) {
                                                                 _handleDropdownChange(
@@ -1645,12 +1861,21 @@ final response = Provider.of<CheckListProvider>(context, listen: false)
                                                     ),
                                                   ),
                                                 ),
-                                               if (showDataPointsButton &&
-    index < selectedDropdownValues.length && // Check if index is within range
-    selectedDropdownValues[index].isNotEmpty && // Check if the list is not empty
-    selectedDropdownValues[index].first != "Not Applicable" &&
-    selectedDropdownValues[index].first != "Select Answer") 
-
+                                                if (showDataPointsButton &&
+                                                    index <
+                                                        selectedDropdownValues
+                                                            .length && // Check if index is within range
+                                                    selectedDropdownValues[
+                                                            index]
+                                                        .isNotEmpty && // Check if the list is not empty
+                                                    selectedDropdownValues[
+                                                                index]
+                                                            .first !=
+                                                        "Not Applicable" &&
+                                                    selectedDropdownValues[
+                                                                index]
+                                                            .first !=
+                                                        "Select Answer")
                                                   Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment

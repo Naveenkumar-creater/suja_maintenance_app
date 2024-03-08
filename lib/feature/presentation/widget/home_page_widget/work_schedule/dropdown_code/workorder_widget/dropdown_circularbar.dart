@@ -80,7 +80,7 @@ class _DropdownMenuCircularState extends State<DropdownMenuCircular> {
           const SizedBox(height: defaultPadding * 3),
           GestureDetector(
             onTap: () {
-              _showBottomSheet(context);
+              // _showBottomSheet(context);
             },
             child: widget.widgetOptions[selectedValueIndex],
           ),
