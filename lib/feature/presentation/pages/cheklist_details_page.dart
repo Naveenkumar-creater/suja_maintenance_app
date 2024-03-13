@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 // import 'package:image/image.dart' as img;
 import 'package:intl/intl.dart';
@@ -81,7 +82,7 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
   // void pauseStatus() {
   //   initiatePauseService.initiatePause(context: context, id: widget.planId);
   // }
-
+  List<String> acrdpValues = [];
   String getStatusIcon(int method) {
     if (method == 1) {
       return 'assets/images/eye.png';
@@ -185,7 +186,13 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
     }
   }
 
-  void _handleDropdownChange(int index, String newValue) {
+  void _handleDropdownChange(int index, String newValue) async {
+    await _fetchDataPoints(index);
+    var fetchdata = Provider.of<DataPointProvider>(context, listen: false)
+        .user
+        ?.responseData
+        .checklistDatapointsList;
+
     setState(() {
       final String previousValue = selectedDropdownValues[index].first;
 
@@ -203,10 +210,15 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
       }
       selectedDropdownValues[index] = [newValue]; // Update the selected value
 
-      if (newValue == "Failed" || newValue == "Conditionally Passed") {
+      if (newValue == "Passed") {
+        if (fetchdata?.length != 0) {
+          _showPopup(context, index);
+          showDataPointsButton = true;
+        } else {
+          showDataPointsButton = true;
+        }
+      } else if (newValue == "Failed" || newValue == "Conditionally Passed") {
         _showPopup(context, index);
-        showDataPointsButton = true;
-      } else if (newValue == "Passed") {
         showDataPointsButton = true;
       } else if (newValue == "Select Answer" || newValue == "Not Applicable") {
         showDataPointsButton = true;
@@ -520,8 +532,9 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
             acrdpId: int.parse(acrdpId), // Convert acrdpId to integer
             amdpDatapointDescription: description ??
                 "", // Use amdpDatapointDescription from datapointDescriptions list
-            acrdpDatapointValue:
-                editedValue.isEmpty?"0":editedValue, // Use editedValue as acrdpDatapointValue
+            acrdpDatapointValue: editedValue.isEmpty
+                ? "0"
+                : editedValue, // Use editedValue as acrdpDatapointValue
           );
 
           checkpoint.datapoints
@@ -761,14 +774,23 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
     // descriptionController.text = initialData['description'];
 
     List<DataEntry> localDataEntries = myStatefulWidgetDataMap[index] ?? [];
-    List<String> acrdpValues = [];
+
     List<String> acrdDescription = [];
+
+    List<String> datalowerRangeValue = [];
+    List<String> datahigherRangeValue = [];
+    List<String> dataamtsValue = [];
 
     void onMyStatefulWidgetDataChanged(int index, List<DataEntry> newData) {
       setState(() {
         myStatefulWidgetDataMap[index] = newData;
       });
     }
+
+    final lowerRangeValue = "";
+
+    final upperRangeValue = "";
+    final amts_value = "";
 
     bool isValidInteger(String value) {
       if (value == null) return false;
@@ -780,6 +802,7 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
+        final themeProvider = Provider.of<ThemeProvider>(context);
         return WillPopScope(
           onWillPop: () async {
             return false;
@@ -787,11 +810,15 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: AlertDialog(
-              backgroundColor: Colors.white,
+              backgroundColor: themeProvider.isDarkTheme
+                  ? const Color(0xFF424242)
+                  : Color.fromARGB(255, 255, 255, 255),
               content: Container(
                 width: 550,
                 height: 700,
-                color: Colors.white,
+                color: themeProvider.isDarkTheme
+                    ? const Color(0xFF424242)
+                    : Color.fromARGB(255, 255, 255, 255),
                 child: Form(
                   key: formKey,
                   child: Column(
@@ -835,8 +862,8 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                               },
                               decoration: const InputDecoration(
                                 labelText: 'Enter Notes',
-                                     floatingLabelBehavior:
-                                                                                  FloatingLabelBehavior.never,
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.never,
                                 contentPadding:
                                     EdgeInsets.all(defaultPadding * 3),
                                 border: OutlineInputBorder(
@@ -874,6 +901,7 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                         builder: (context, DetailsProvider, _) {
                           final response = DetailsProvider.user?.responseData;
                           final datapoint = response?.checklistDatapointsList;
+
                           acrdDescription =
                               List.generate(datapoint?.length ?? 0, (index) {
                             return datapoint![index]
@@ -885,6 +913,23 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                           acrdpValues =
                               List.generate(datapoint?.length ?? 0, (index) {
                             return datapoint![index]?.acrdpId.toString() ??
+                                ''; // Return acrdpId as String or an empty string if datapoint[index] is null
+                          });
+
+                          datalowerRangeValue =
+                              List.generate(datapoint?.length ?? 0, (index) {
+                            return datapoint![index]?.amtsLowerRangeValue ??
+                                ''; // Return acrdpId as String or an empty string if datapoint[index] is null
+                          });
+                          datahigherRangeValue =
+                              List.generate(datapoint?.length ?? 0, (index) {
+                            return datapoint![index]?.amtsUpperRangeValue ??
+                                ''; // Return acrdpId as String or an empty string if datapoint[index] is null
+                          });
+
+                          dataamtsValue =
+                              List.generate(datapoint?.length ?? 0, (index) {
+                            return datapoint![index]?.amtsValue ??
                                 ''; // Return acrdpId as String or an empty string if datapoint[index] is null
                           });
 
@@ -1005,7 +1050,6 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                                           CrossAxisAlignment
                                                               .start,
                                                       children: [
-                                                      
                                                         const SizedBox(
                                                           height:
                                                               defaultPadding,
@@ -1013,7 +1057,6 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                                         SizedBox(
                                                           height: 80,
                                                           child: Row(
-                                                            
                                                             children: [
                                                               SizedBox(
                                                                 width: 220,
@@ -1053,125 +1096,121 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                                                 width: 150,
                                                                 height:
                                                                     70, // Set the desired height here
-                                                                child:
-                                                                    Column(
-                                                                      children: [
-                                                                        Expanded(
-                                                                          child: TextFormField(
-                                                                            controller:
-                                                                                datapointControllers[
-                                                                                    index],
-                                                                            onChanged:
-                                                                                (newValue) {
-                                                                              setState(
-                                                                                  () {
-                                                                                if (index >= 0 &&
-                                                                                    index < dataPointValues.length) {
-                                                                                  dataPointValues[index] =
-                                                                                      newValue;
-                                                                                }
-                                                                              });
-                                                                            },
-                                                                            decoration:
-                                                                                InputDecoration(
-                                                                              labelText:
-                                                                                  'Enter value',
-                                                                              floatingLabelBehavior:
-                                                                                  FloatingLabelBehavior.never,
-
-                                                                              contentPadding:
-                                                                                  EdgeInsets.all(defaultPadding),
-                                                                                
-                                                                              enabledBorder:
-                                                                                  OutlineInputBorder(
-                                                                                borderSide:
-                                                                                    BorderSide(
-                                                                                  color: datapointControllers[index].text.isEmpty
-                                                                                      ? Colors.grey
-                                                                                      : ((lowerRangeValue != null && upperRangeValue != null) && isValidInteger(lowerRangeValue) && isValidInteger(upperRangeValue) && (int.tryParse(lowerRangeValue) ?? 0) <= (int.tryParse(datapointControllers[index].text) ?? 0) && (int.tryParse(upperRangeValue!) ?? 0) >= (int.tryParse(datapointControllers[index].text) ?? 0)) || (datapointControllers[index].text == item!.amtsValue) // Compare entered value with expected value
-                                                                                          ? Colors.black
-                                                                                          : Colors.orange, // Border color when focused
-                                                                                  width:
-                                                                                      2.0, // Border width when focused
-                                                                                ),
-                                                                              ),
-                                                                              focusedBorder:
-                                                                                  OutlineInputBorder(
-                                                                                borderSide:
-                                                                                    BorderSide(
-                                                                                  color: datapointControllers[index].text.isEmpty
-                                                                                      ? Colors.grey
-                                                                                      : ((lowerRangeValue != null && upperRangeValue != null) && isValidInteger(lowerRangeValue) && isValidInteger(upperRangeValue) && (int.tryParse(lowerRangeValue) ?? 0) <= (int.tryParse(datapointControllers[index].text) ?? 0) && (int.tryParse(upperRangeValue!) ?? 0) >= (int.tryParse(datapointControllers[index].text) ?? 0)) || (datapointControllers[index].text == item!.amtsValue) // Compare entered value with expected value
-                                                                                          ? Colors.black
-                                                                                          : Colors.orange,
-                                                                                                                                            
-                                                                                  width:
-                                                                                      2.0, // Border width when focused
-                                                                                ),
-                                                                              ),
-                                                                              hintText: dataPointValues.isNotEmpty
-                                                                                  ? 'Enter Value'
-                                                                                  : '',
-                                                                              labelStyle:
-                                                                                  TextStyle(
-                                                                                color: datapointControllers[index].text.isEmpty
-                                                                                    ? Colors.grey
-                                                                                    : ((lowerRangeValue != null && upperRangeValue != null) && isValidInteger(lowerRangeValue) && isValidInteger(upperRangeValue) && (int.tryParse(lowerRangeValue) ?? 0) <= (int.tryParse(datapointControllers[index].text) ?? 0) && (int.tryParse(upperRangeValue!) ?? 0) >= (int.tryParse(datapointControllers[index].text) ?? 0)) || ((isValidInteger(item!.amtsValue)) && (isValidInteger(datapointControllers[index].text) ?? false) && (int.tryParse(item!.amtsValue) ?? 0) == (int.tryParse(datapointControllers[index].text) ?? 0))
-                                                                                        ? Colors.black
-                                                                                        : Colors.orange,
-                                                                              ),
+                                                                child: Column(
+                                                                  children: [
+                                                                    Expanded(
+                                                                      child:
+                                                                          TextFormField(
+                                                                        controller:
+                                                                            datapointControllers[index],
+                                                                        onChanged:
+                                                                            (newValue) {
+                                                                          setState(
+                                                                              () {
+                                                                            if (index >= 0 &&
+                                                                                index < dataPointValues.length) {
+                                                                              dataPointValues[index] = newValue;
+                                                                            }
+                                                                          });
+                                                                        },
+                                                                        decoration:
+                                                                            InputDecoration(
+                                                                          labelText:
+                                                                              'Enter value',
+                                                                          floatingLabelBehavior:
+                                                                              FloatingLabelBehavior.never,
+                                                                          contentPadding:
+                                                                              EdgeInsets.all(defaultPadding),
+                                                                          enabledBorder:
+                                                                              OutlineInputBorder(
+                                                                            borderSide:
+                                                                                BorderSide(
+                                                                              color: datapointControllers[index].text.isEmpty
+                                                                                  ? Colors.grey
+                                                                                  : ((lowerRangeValue != null && upperRangeValue != null) && isValidInteger(lowerRangeValue) && isValidInteger(upperRangeValue) && (int.tryParse(lowerRangeValue) ?? 0) <= (double.tryParse(datapointControllers[index].text) ?? 0) && (int.tryParse(upperRangeValue!) ?? 0) >= (double.tryParse(datapointControllers[index].text) ?? 0)) || (datapointControllers[index].text == item!.amtsValue) // Compare entered value with expected value
+                                                                                      ? Colors.black
+                                                                                      : Colors.orange, // Border color when focused
+                                                                              width: 2.0, // Border width when focused
                                                                             ),
-                                                                            validator:
-                                                                                (value) {
-                                                                              // Validate other conditions, if any
-                                                                              if ((lowerRangeValue != null && lowerRangeValue.isNotEmpty) ||
-                                                                                  (upperRangeValue != null &&
-                                                                                      upperRangeValue.isNotEmpty) ||
-                                                                                  (item.amtsValue != null && item.amtsValue.isNotEmpty)) {
-                                                                                if 
-                                                                                    (value == null || value.isEmpty) {
-                                                                                  return 'Required Field';
-                                                                                }
-                                                                              }
-                                                                              return null;
-                                                                            },
+                                                                          ),
+                                                                          focusedBorder:
+                                                                              OutlineInputBorder(
+                                                                            borderSide:
+                                                                                BorderSide(
+                                                                              color: datapointControllers[index].text.isEmpty
+                                                                                  ? Colors.grey
+                                                                                  : ((lowerRangeValue != null && upperRangeValue != null) && isValidInteger(lowerRangeValue) && isValidInteger(upperRangeValue) && (double.tryParse(lowerRangeValue) ?? 0) <= (double.tryParse(datapointControllers[index].text) ?? 0) && (double.tryParse(upperRangeValue!) ?? 0) >= (double.tryParse(datapointControllers[index].text) ?? 0)) || (datapointControllers[index].text == item!.amtsValue) // Compare entered value with expected value
+                                                                                      ? Colors.black
+                                                                                      : Colors.orange,
+
+                                                                              width: 2.0, // Border width when focused
+                                                                            ),
+                                                                          ),
+                                                                          hintText: dataPointValues.isNotEmpty
+                                                                              ? 'Enter Value'
+                                                                              : '',
+                                                                          labelStyle:
+                                                                              TextStyle(
+                                                                            color: datapointControllers[index].text.isEmpty
+                                                                                ? Colors.grey
+                                                                                : ((lowerRangeValue != null && upperRangeValue != null) && isValidInteger(lowerRangeValue) && isValidInteger(upperRangeValue) && (double.tryParse(lowerRangeValue) ?? 0) <= (double.tryParse(datapointControllers[index].text) ?? 0) && (double.tryParse(upperRangeValue!) ?? 0) >= (double.tryParse(datapointControllers[index].text) ?? 0)) || ((isValidInteger(item!.amtsValue)) && (isValidInteger(datapointControllers[index].text) ?? false) && (int.tryParse(item!.amtsValue) ?? 0) == (int.tryParse(datapointControllers[index].text) ?? 0))
+                                                                                    ? Colors.black
+                                                                                    : Colors.orange,
                                                                           ),
                                                                         ),
-                                                                        datapointControllers[index]
-                                                                                .text
-                                                                                .isEmpty
-                                                                            ? Text(
-                                                                                "")
-                                                                            : (((lowerRangeValue != null && upperRangeValue != null) && isValidInteger(lowerRangeValue) && isValidInteger(upperRangeValue) && (int.tryParse(lowerRangeValue) ?? 0) <= (int.tryParse(datapointControllers[index].text) ?? 0) && (int.tryParse(upperRangeValue!) ?? 0) >= (int.tryParse(datapointControllers[index].text) ?? 0)) ||
-                                                                                    (datapointControllers[index].text == item!.amtsValue) // Compare entered value with expected value
-                                                                                )
-                                                                                ? Text('')
-                                                                                : Text(
-                                                                                    "Value out of Spec",
-                                                                                    style: TextStyle(color: Colors.orange, fontSize: 12),
-                                                                                  ),
-                                                                      ],
+                                                                        inputFormatters: [
+                                                                          FilteringTextInputFormatter.allow(
+                                                                              RegExp(r'^\d+\.?\d{0,4}')),
+                                                                        ],
+                                                                        validator:
+                                                                            (value) {
+                                                                          // Validate other conditions, if any
+                                                                          // if ((lowerRangeValue != null && lowerRangeValue.isNotEmpty) ||
+                                                                          //     (upperRangeValue != null &&
+                                                                          //         upperRangeValue.isNotEmpty) ||
+                                                                          //     (item.amtsValue != null && item.amtsValue.isNotEmpty)) {
+                                                                          if (value == null ||
+                                                                              value.isEmpty) {
+                                                                            return 'Required Field';
+                                                                          }
+                                                                          return null;
+                                                                        },
+                                                                      ),
                                                                     ),
+                                                                    datapointControllers[index]
+                                                                            .text
+                                                                            .isEmpty
+                                                                        ? Text(
+                                                                            "")
+                                                                        : (((lowerRangeValue != null && upperRangeValue != null) && isValidInteger(lowerRangeValue) && isValidInteger(upperRangeValue) && (double.tryParse(lowerRangeValue) ?? 0) <= (double.tryParse(datapointControllers[index].text) ?? 0) && (double.tryParse(upperRangeValue!) ?? 0) >= (double.tryParse(datapointControllers[index].text) ?? 0)) ||
+                                                                                (datapointControllers[index].text == item!.amtsValue) // Compare entered value with expected value
+                                                                            )
+                                                                            ? Text('')
+                                                                            : Text(
+                                                                                "Value out of Spec",
+                                                                                style: TextStyle(color: Colors.orange, fontSize: 12),
+                                                                              ),
+                                                                  ],
+                                                                ),
                                                               ),
                                                               datapointControllers[
                                                                           index]
                                                                       .text
                                                                       .isEmpty
                                                                   ? Text("")
-                                                                  : (((lowerRangeValue != null &&
-                                                                                  upperRangeValue != null) &&
+                                                                  : (((lowerRangeValue != null && upperRangeValue != null) &&
                                                                               isValidInteger(lowerRangeValue) &&
                                                                               isValidInteger(upperRangeValue) &&
-                                                                              (int.tryParse(lowerRangeValue) ?? 0) <= (int.tryParse(datapointControllers[index].text) ?? 0) &&
-                                                                              (int.tryParse(upperRangeValue!) ?? 0) >= (int.tryParse(datapointControllers[index].text) ?? 0)) ||
+                                                                              (double.tryParse(lowerRangeValue) ?? 0) <= (double.tryParse(datapointControllers[index].text) ?? 0) &&
+                                                                              (double.tryParse(upperRangeValue!) ?? 0) >= (double.tryParse(datapointControllers[index].text) ?? 0)) ||
                                                                           (datapointControllers[index].text == item!.amtsValue) // Compare entered value with expected value
                                                                       )
                                                                       ? Text('')
                                                                       : Icon(
                                                                           Icons
                                                                               .warning,
-                                                                          color: Colors
-                                                                              .orange,
+                                                                          color:
+                                                                              Colors.orange,
                                                                         ),
                                                             ],
                                                           ),
@@ -1280,7 +1319,100 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                             if (!isConfirmButtonVisible)
                               ElevatedButton(
                                 onPressed: () {
-                                  if (formKey.currentState!.validate()) {
+                                  List<String> editedValues =
+                                      datapointControllers
+                                          .map((controller) => controller.text)
+                                          .toList();
+
+                                  if (acrdpValues.length != 0)
+                                    setState(() {
+                                      isConfirmButtonVisible = false;
+                                      bool allConditionsMet =
+                                          true; // Assume all conditions are met initially
+
+                                      for (int i = 0;
+                                          i < acrdpValues.length;
+                                          i++) {
+                                        if (((((datalowerRangeValue[i]
+                                                        .isEmpty) &&
+                                                    (datahigherRangeValue[i]
+                                                        .isEmpty) &&
+                                                    (dataamtsValue[i]
+                                                        .isEmpty)) ||
+                                                isValidInteger(datalowerRangeValue[i]) &&
+                                                    isValidInteger(
+                                                        datahigherRangeValue[
+                                                            i]) &&
+                                                    ((double.tryParse(datalowerRangeValue[i]) ??
+                                                                0) <=
+                                                            (double.tryParse(
+                                                                    datapointControllers[i]
+                                                                        .text) ??
+                                                                0) &&
+                                                        (double.tryParse(datahigherRangeValue[i]) ??
+                                                                0) >=
+                                                            (double.tryParse(editedValues[i]) ??
+                                                                0)))) ||
+                                            (isValidInteger(dataamtsValue[i]) &&
+                                                (dataamtsValue[i] ==
+                                                    datapointControllers[i]
+                                                        .text))) {
+                                          allConditionsMet = true;
+                                          // Condition met
+
+                                          // Condition met
+                                        } else {
+                                          // Condition not met, set allConditionsMet to false and break the loop
+                                          allConditionsMet = false;
+                                          break;
+                                        }
+                                      }
+                                      // After the loop, update the selectedDropdownValues[index] based on allConditionsMet
+                                      allConditionsMet
+                                          ? selectedDropdownValues[index] = [
+                                              "Passed"
+                                            ]
+                                          : selectedDropdownValues[index] = [
+                                              "Failed"
+                                            ];
+
+                                      final Map<String, dynamic> data = {
+                                        'note': noteController.text,
+                                        'images':
+                                            capturedImages, // Store captured images
+                                      };
+
+                                      popupData[index] = data;
+
+                                      // Get edited values from the text controllers
+
+                                      userEnteredDataPoints[index] =
+                                          editedValues;
+
+                                      List<Map<String, String>> combinedValues =
+                                          [];
+                                      for (int i = 0;
+                                          i < acrdDescription.length;
+                                          i++) {
+                                        Map<String, String> valuePair = {
+                                          'acrpDescription': acrdDescription[i],
+                                          'acrdpId': acrdpValues[i],
+                                          'editedValue': i < editedValues.length
+                                              ? editedValues[i]
+                                              : "", // Use edited value if available, otherwise use an empty string
+                                        };
+                                        combinedValues.add(valuePair);
+                                      }
+                                      EnteredDataPoints[index] = combinedValues;
+                                      myStatefulWidgetDataMap[index] =
+                                          localDataEntries;
+
+                                      // _showPopup(context, index);
+                                      Navigator.of(context).pop();
+                                      Navigator.of(context).pop();
+                                      isConfirmButtonVisible = true;
+                                    });
+                                  else if (formKey.currentState!.validate()) {
                                     isConfirmButtonVisible = false;
                                     final Map<String, dynamic> data = {
                                       'note': noteController.text,
@@ -1291,11 +1423,6 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                     popupData[index] = data;
 
                                     // Get edited values from the text controllers
-                                    List<String> editedValues =
-                                        datapointControllers
-                                            .map(
-                                                (controller) => controller.text)
-                                            .toList();
 
                                     userEnteredDataPoints[index] = editedValues;
 
@@ -1341,8 +1468,9 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                     // userEnteredDataPoints.clear();
                                     // myStatefulWidgetDataMap.clear();
 
-                                    if (selectedDropdownValues[index].first !=
-                                        "Passed") if (!formKey.currentState!.validate()) {
+                                    // if (selectedDropdownValues[index].first !=
+                                    //     "Passed")
+                                    if (!formKey.currentState!.validate()) {
                                       selectedDropdownValues[index] = [
                                         "Select Answer"
                                       ];
@@ -1586,7 +1714,6 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                                       child: TextFormField(
                                                         controller:
                                                             numberController,
-                                                            
                                                         style: const TextStyle(
                                                             color:
                                                                 Colors.black),
