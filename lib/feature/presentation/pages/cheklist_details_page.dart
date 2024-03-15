@@ -1618,509 +1618,538 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                       ),
                     ),
                   )
-                : Scaffold(
-                    appBar: AppBar(
-                      automaticallyImplyLeading: true,
-                      iconTheme: const IconThemeData(
-                        color: Colors.white,
-                      ),
-                      toolbarHeight: 110,
-                      title: PreferredSize(
-                        preferredSize: const Size.fromHeight(90),
-                        child: Container(
-                          color: themeProvider.isDarkTheme
-                              ? const Color(0xFF212121)
-                              : const Color(0xFF25476A),
-                          padding: const EdgeInsets.symmetric(horizontal: 18),
-                          height: 160,
-                          child: SafeArea(
-                            child: Center(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  Text(
-                                    widget.assetname ?? "",
-                                    style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  //                                widget.pageId == 1?
-
-                                  // Text(
-                                  //                                qrasset.first.assetname??"",
-                                  //                                 style: const TextStyle(
-                                  //                                   fontSize: 20,
-                                  //                                   fontWeight: FontWeight.bold,
-                                  //                                   color: Colors.white,
-                                  //                                 ),
-                                  //                               ):  Text(
-                                  //                               asset.first.assetname??"",
-                                  //                                 style: const TextStyle(
-                                  //                                   fontSize: 20,
-                                  //                                   fontWeight: FontWeight.bold,
-                                  //                                   color: Colors.white,
-                                  //                                 ),
-                                  //                               ),
-
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                :     
+                 WillPopScope(
+                    onWillPop: () async {
+                      return (widget.acrpinspectionstatus != 3 &&
+                                widget.acrpinspectionstatus != 4)?false:true;
+                    },
+                    child: Scaffold(
+                        appBar: AppBar(
+                            
+                          automaticallyImplyLeading: true,
+                          iconTheme: const IconThemeData(
+                            color: Colors.white,
+                          ),
+                          toolbarHeight: 110,
+                          title: PreferredSize(
+                            preferredSize: const Size.fromHeight(90),
+                            child: Container(
+                              color: themeProvider.isDarkTheme
+                                  ? const Color(0xFF212121)
+                                  : const Color(0xFF25476A),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 18),
+                              height: 160,
+                              child: SafeArea(
+                                child: Center(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
                                       Text(
-                                        chekListname,
+                                        widget.assetname ?? "",
                                         style: const TextStyle(
-                                          fontSize: 25,
+                                          fontSize: 20,
                                           fontWeight: FontWeight.bold,
                                           color: Colors.white,
                                         ),
                                       ),
-                                      if (isTextFieldVisible)
-                                        // Show TextField conditionally
-                                        if (widget.acrpinspectionstatus == 3 ||
-                                            widget.acrpinspectionstatus == 4)
+                                      //                                widget.pageId == 1?
+
+                                      // Text(
+                                      //                                qrasset.first.assetname??"",
+                                      //                                 style: const TextStyle(
+                                      //                                   fontSize: 20,
+                                      //                                   fontWeight: FontWeight.bold,
+                                      //                                   color: Colors.white,
+                                      //                                 ),
+                                      //                               ):  Text(
+                                      //                               asset.first.assetname??"",
+                                      //                                 style: const TextStyle(
+                                      //                                   fontSize: 20,
+                                      //                                   fontWeight: FontWeight.bold,
+                                      //                                   color: Colors.white,
+                                      //                                 ),
+                                      //                               ),
+
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
                                           Text(
-                                            checklist.first.personfname,
+                                            chekListname,
                                             style: const TextStyle(
-                                              fontSize: 20,
+                                              fontSize: 25,
                                               fontWeight: FontWeight.bold,
                                               color: Colors.white,
                                             ),
-                                          )
-                                        else
-                                          SizedBox(
-                                            width: 300,
-                                            height: 50,
-                                            child: Row(
-                                              children: [
-                                                Expanded(
-                                                  child: Form(
-                                                    key: operatorFormKey,
-                                                    child: Container(
-                                                      margin: const EdgeInsets
-                                                              .only(
-                                                          left: defaultPadding *
-                                                              2),
-                                                      decoration: const BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                                  Radius
+                                          ),
+                                          if (isTextFieldVisible)
+                                            // Show TextField conditionally
+                                            if (widget.acrpinspectionstatus ==
+                                                    3 ||
+                                                widget.acrpinspectionstatus ==
+                                                    4)
+                                              Text(
+                                                checklist.first.personfname,
+                                                style: const TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white,
+                                                ),
+                                              )
+                                            else
+                                              SizedBox(
+                                                width: 300,
+                                                height: 50,
+                                                child: Row(
+                                                  children: [
+                                                    Expanded(
+                                                      child: Form(
+                                                        key: operatorFormKey,
+                                                        child: Container(
+                                                          margin: const EdgeInsets
+                                                                  .only(
+                                                              left:
+                                                                  defaultPadding *
+                                                                      2),
+                                                          decoration: const BoxDecoration(
+                                                              borderRadius: BorderRadius
+                                                                  .all(Radius
                                                                       .circular(
                                                                           5))),
-                                                      child: TextFormField(
-                                                        controller:
-                                                            numberController,
-                                                        style: const TextStyle(
-                                                            color:
-                                                                Colors.black),
-                                                        validator: (value) {
-                                                          if (value == null ||
-                                                              value.isEmpty) {
-                                                            return 'Please enter Operator Id';
-                                                          }
-                                                          if (value.contains(RegExp(
-                                                              r'[!@#$%^&*(),.?":{}|<>]'))) {
-                                                            return 'Operator Id cannot contain special symbols';
-                                                          }
-                                                          if (value
-                                                              .contains(' ')) {
-                                                            return 'Operator Id cannot contain spaces';
-                                                          }
-                                                          return null;
-                                                        },
-                                                        decoration:
-                                                            InputDecoration(
-                                                          hintText:
-                                                              'Enter Operator Id',
-                                                          hintStyle:
-                                                              const TextStyle(
+                                                          child: TextFormField(
+                                                            controller:
+                                                                numberController,
+                                                            style:
+                                                                const TextStyle(
+                                                                    color: Colors
+                                                                        .black),
+                                                            validator: (value) {
+                                                              if (value ==
+                                                                      null ||
+                                                                  value
+                                                                      .isEmpty) {
+                                                                return 'Please enter Operator Id';
+                                                              }
+                                                              if (value.contains(
+                                                                  RegExp(
+                                                                      r'[!@#$%^&*(),.?":{}|<>]'))) {
+                                                                return 'Operator Id cannot contain special symbols';
+                                                              }
+                                                              if (value
+                                                                  .contains(
+                                                                      ' ')) {
+                                                                return 'Operator Id cannot contain spaces';
+                                                              }
+                                                              return null;
+                                                            },
+                                                            decoration:
+                                                                InputDecoration(
+                                                              hintText:
+                                                                  'Enter Operator Id',
+                                                              hintStyle: const TextStyle(
                                                                   color: Colors
                                                                       .black45),
-                                                          filled: true,
-                                                          fillColor:
-                                                              Colors.white,
-                                                          labelStyle:
-                                                              const TextStyle(
-                                                                  fontSize: 12),
-                                                          contentPadding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  left: 20),
-                                                          enabledBorder:
-                                                              OutlineInputBorder(
-                                                            borderSide: BorderSide(
-                                                                color: Colors
-                                                                    .blueGrey
-                                                                    .shade50),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        5),
-                                                          ),
-                                                          focusedBorder:
-                                                              OutlineInputBorder(
-                                                            borderSide: BorderSide(
-                                                                color: Colors
-                                                                    .blueGrey
-                                                                    .shade50),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        5),
+                                                              filled: true,
+                                                              fillColor:
+                                                                  Colors.white,
+                                                              labelStyle:
+                                                                  const TextStyle(
+                                                                      fontSize:
+                                                                          12),
+                                                              contentPadding:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      left: 20),
+                                                              enabledBorder:
+                                                                  OutlineInputBorder(
+                                                                borderSide: BorderSide(
+                                                                    color: Colors
+                                                                        .blueGrey
+                                                                        .shade50),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            5),
+                                                              ),
+                                                              focusedBorder:
+                                                                  OutlineInputBorder(
+                                                                borderSide: BorderSide(
+                                                                    color: Colors
+                                                                        .blueGrey
+                                                                        .shade50),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            5),
+                                                              ),
+                                                            ),
                                                           ),
                                                         ),
                                                       ),
                                                     ),
-                                                  ),
-                                                ),
-                                                TextButton(
-                                                  onPressed: () {
-                                                    if (operatorFormKey
-                                                            .currentState
-                                                            ?.validate() ==
-                                                        true) {
-                                                      handleSubmit();
-                                                    }
-                                                  },
-                                                  child: const Text(
-                                                    'OK',
-                                                    style: TextStyle(
-                                                      color: Colors.white,
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        if (operatorFormKey
+                                                                .currentState
+                                                                ?.validate() ==
+                                                            true) {
+                                                          handleSubmit();
+                                                        }
+                                                      },
+                                                      child: const Text(
+                                                        'OK',
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
                                                     ),
-                                                  ),
+                                                  ],
                                                 ),
-                                              ],
-                                            ),
-                                          ),
-                                      if (!isTextFieldVisible)
-                                        Text(
-                                          personName, // Show personName
-                                          style: const TextStyle(
-                                            fontSize: 18,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      actions: [
-                        if (widget.acrpinspectionstatus == 3 ||
-                            widget.acrpinspectionstatus == 4)
-                          Row(
-                            children: [
-                              SizedBox(
-                                width: 100,
-                                height: 100,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      right: 16, top: 8, bottom: 8),
-                                  child: ClipOval(child: buildImageWidget()),
-                                ),
-                              ),
-                            ],
-                          )
-                        else
-                          SizedBox(
-                            width: 150,
-                            height: 100,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: widget.capturedImages?.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                final imageFile = widget.capturedImages?[index];
-
-                                return Padding(
-                                  padding: const EdgeInsets.only(
-                                    right: 16,
-                                    top: 8,
-                                    bottom: 8,
-                                  ),
-                                  child: ClipOval(
-                                    child: Image.file(
-                                      imageFile!,
-                                      width: 100, // Set the width as needed
-                                      height: 50, // Set the height as needed
-                                      fit: BoxFit
-                                          .cover, // Adjust the fit as needed
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                      ],
-                    ),
-                    body: Column(
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(defaultPadding),
-                            child: ListView.builder(
-                              itemCount: checklist.length,
-                              itemBuilder: (context, index) {
-                                final asset = checklist[index];
-                                String decodedTamilText = utf8.decode(
-                                    asset.checkpoint.runes.toList(),
-                                    allowMalformed: true);
-                                final statusIcon = getStatusIcon(asset.methods);
-                                final role =
-                                    responsibilityRole(asset.responsibility);
-
-                                return Card(
-                                  elevation: 5,
-                                  shadowColor: Colors.black,
-                                  child: Container(
-                                      height: 250,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5),
-                                      ),
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          SizedBox(
-                                            width: 60,
-                                            child: ListTile(
-                                              title: Text("${asset.seqNo}."),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            flex: 4,
-                                            child: ListTile(
-                                              title: Text(
-                                                decodedTamilText,
-                                                style: const TextStyle(
-                                                    fontSize: 14),
+                                              ),
+                                          if (!isTextFieldVisible)
+                                            Text(
+                                              personName, // Show personName
+                                              style: const TextStyle(
+                                                fontSize: 18,
+                                                color: Colors.white,
                                               ),
                                             ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          actions: [
+                            if (widget.acrpinspectionstatus == 3 ||
+                                widget.acrpinspectionstatus == 4)
+                              Row(
+                                children: [
+                                  SizedBox(
+                                    width: 100,
+                                    height: 100,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          right: 16, top: 8, bottom: 8),
+                                      child:
+                                          ClipOval(child: buildImageWidget()),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            else
+                              SizedBox(
+                                width: 150,
+                                height: 100,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: widget.capturedImages?.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    final imageFile =
+                                        widget.capturedImages?[index];
+
+                                    return Padding(
+                                      padding: const EdgeInsets.only(
+                                        right: 16,
+                                        top: 8,
+                                        bottom: 8,
+                                      ),
+                                      child: ClipOval(
+                                        child: Image.file(
+                                          imageFile!,
+                                          width: 100, // Set the width as needed
+                                          height:
+                                              50, // Set the height as needed
+                                          fit: BoxFit
+                                              .cover, // Adjust the fit as needed
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                          ],
+                        ),
+                        body: Column(
+                          children: [
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.all(defaultPadding),
+                                child: ListView.builder(
+                                  itemCount: checklist.length,
+                                  itemBuilder: (context, index) {
+                                    final asset = checklist[index];
+                                    String decodedTamilText = utf8.decode(
+                                        asset.checkpoint.runes.toList(),
+                                        allowMalformed: true);
+                                    final statusIcon =
+                                        getStatusIcon(asset.methods);
+                                    final role = responsibilityRole(
+                                        asset.responsibility);
+
+                                    return Card(
+                                      elevation: 5,
+                                      shadowColor: Colors.black,
+                                      child: Container(
+                                          height: 250,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
                                           ),
-                                          Expanded(
-                                            child: Container(
-                                              alignment: Alignment.center,
-                                              height: 60,
-                                              child: Image.asset(statusIcon),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: Container(
-                                              alignment: Alignment.center,
-                                              height: 60,
-                                              child: Text(role),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            flex: 2,
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(30),
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                      color:
-                                                          Colors.grey.shade300,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              5),
-                                                    ),
-                                                    child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Row(
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              SizedBox(
+                                                width: 60,
+                                                child: ListTile(
+                                                  title:
+                                                      Text("${asset.seqNo}."),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                flex: 4,
+                                                child: ListTile(
+                                                  title: Text(
+                                                    decodedTamilText,
+                                                    style: const TextStyle(
+                                                        fontSize: 14),
+                                                  ),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                child: Container(
+                                                  alignment: Alignment.center,
+                                                  height: 60,
+                                                  child:
+                                                      Image.asset(statusIcon),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                child: Container(
+                                                  alignment: Alignment.center,
+                                                  height: 60,
+                                                  child: Text(role),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                flex: 2,
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              30),
+                                                      child: Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: Colors
+                                                              .grey.shade300,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(5),
+                                                        ),
+                                                        child: Column(
                                                           mainAxisAlignment:
                                                               MainAxisAlignment
                                                                   .center,
                                                           children: [
-                                                            DropdownButton<
-                                                                String>(
-                                                              underline:
-                                                                  Container(),
-                                                              value: index <
-                                                                          selectedDropdownValues
-                                                                              .length &&
-                                                                      selectedDropdownValues[
-                                                                              index]
-                                                                          .isNotEmpty
-                                                                  ? selectedDropdownValues[
-                                                                          index]
-                                                                      .first
-                                                                  : "Select Answer",
-                                                              onChanged:
-                                                                  (newValue) {
-                                                                _handleDropdownChange(
-                                                                    index,
-                                                                    newValue!);
-                                                              },
-                                                              items: <String>[
-                                                                "Select Answer",
-                                                                "Passed",
-                                                                "Failed",
-                                                                "Conditionally Passed",
-                                                                "Not Applicable"
-                                                              ].map<
-                                                                  DropdownMenuItem<
-                                                                      String>>((String
-                                                                  value) {
-                                                                return DropdownMenuItem<
+                                                            Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              children: [
+                                                                DropdownButton<
                                                                     String>(
-                                                                  value: value,
-                                                                  child: Text(
-                                                                      value),
-                                                                );
-                                                              }).toList(),
+                                                                  underline:
+                                                                      Container(),
+                                                                  value: index <
+                                                                              selectedDropdownValues
+                                                                                  .length &&
+                                                                          selectedDropdownValues[index]
+                                                                              .isNotEmpty
+                                                                      ? selectedDropdownValues[
+                                                                              index]
+                                                                          .first
+                                                                      : "Select Answer",
+                                                                  onChanged:
+                                                                      (newValue) {
+                                                                    _handleDropdownChange(
+                                                                        index,
+                                                                        newValue!);
+                                                                  },
+                                                                  items: <String>[
+                                                                    "Select Answer",
+                                                                    "Passed",
+                                                                    "Failed",
+                                                                    "Conditionally Passed",
+                                                                    "Not Applicable"
+                                                                  ].map<
+                                                                      DropdownMenuItem<
+                                                                          String>>((String
+                                                                      value) {
+                                                                    return DropdownMenuItem<
+                                                                        String>(
+                                                                      value:
+                                                                          value,
+                                                                      child: Text(
+                                                                          value),
+                                                                    );
+                                                                  }).toList(),
+                                                                ),
+                                                              ],
                                                             ),
                                                           ],
                                                         ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                                if (showDataPointsButton &&
-                                                    index <
-                                                        selectedDropdownValues
-                                                            .length && // Check if index is within range
-                                                    selectedDropdownValues[
-                                                            index]
-                                                        .isNotEmpty && // Check if the list is not empty
-                                                    selectedDropdownValues[
-                                                                index]
-                                                            .first !=
-                                                        "Not Applicable" &&
-                                                    selectedDropdownValues[
-                                                                index]
-                                                            .first !=
-                                                        "Select Answer")
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      ElevatedButton(
-                                                        onPressed: () {
-                                                          _showPopup(
-                                                              context, index);
-                                                        },
-                                                        child: const Text(
-                                                          "Add Inputs",
-                                                          style: TextStyle(
-                                                            fontSize: 13,
-                                                          ),
-                                                        ),
                                                       ),
-                                                    ],
-                                                  ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      )),
-                                );
-                              },
+                                                    ),
+                                                    if (showDataPointsButton &&
+                                                        index <
+                                                            selectedDropdownValues
+                                                                .length && // Check if index is within range
+                                                        selectedDropdownValues[
+                                                                index]
+                                                            .isNotEmpty && // Check if the list is not empty
+                                                        selectedDropdownValues[
+                                                                    index]
+                                                                .first !=
+                                                            "Not Applicable" &&
+                                                        selectedDropdownValues[
+                                                                    index]
+                                                                .first !=
+                                                            "Select Answer")
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          ElevatedButton(
+                                                            onPressed: () {
+                                                              _showPopup(
+                                                                  context,
+                                                                  index);
+                                                            },
+                                                            child: const Text(
+                                                              "Add Inputs",
+                                                              style: TextStyle(
+                                                                fontSize: 13,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          )),
+                                    );
+                                  },
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                        if (widget.acrpinspectionstatus != 3 &&
-                            widget.acrpinspectionstatus != 4)
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              ElevatedButton(
-                                onPressed: () async {
-                                  if (personName.isNotEmpty &&
-                                      !isTextFieldVisible) {
-                                    try {
-                                      final response = await submitChecklist(
-                                          context, "submit_checklist", 2);
-                                      if (response['response_code'] == 4 ||
-                                          response['response_code'] == 5 ||
-                                          response['response_code'] == 6) {
-                                        ShowError.showAlert(
-                                            context, response['response_msg']);
-                                      } else {
-                                        // If response_code is not 4, 5, or 6, proceed to _navigateBack()
-                                        _navigateBack();
+                            if (widget.acrpinspectionstatus != 3 &&
+                                widget.acrpinspectionstatus != 4)
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: () async {
+                                      if (personName.isNotEmpty &&
+                                          !isTextFieldVisible) {
+                                        try {
+                                          final response =
+                                              await submitChecklist(context,
+                                                  "submit_checklist", 2);
+                                          if (response['response_code'] == 4 ||
+                                              response['response_code'] == 5 ||
+                                              response['response_code'] == 6) {
+                                            ShowError.showAlert(context,
+                                                response['response_msg']);
+                                          } else {
+                                            // If response_code is not 4, 5, or 6, proceed to _navigateBack()
+                                            _navigateBack();
+                                          }
+                                        } catch (error) {
+                                          // Handle and show the error message here
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              content: Text(error.toString()),
+                                              backgroundColor: Colors.amber,
+                                            ),
+                                          );
+                                        }
                                       }
-                                    } catch (error) {
-                                      // Handle and show the error message here
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                          content: Text(error.toString()),
-                                          backgroundColor: Colors.amber,
-                                        ),
-                                      );
-                                    }
-                                  }
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  foregroundColor: Colors.white,
-                                  backgroundColor: personName.isNotEmpty
-                                      ? Colors.blue
-                                      : Colors.grey,
-                                ),
-                                child: const Text("Save"),
-                              ),
-                              const SizedBox(width: defaultPadding),
-                              ElevatedButton(
-                                onPressed: () {
-                                  if (!isAnySelectAnswer &&
-                                      personName.isNotEmpty) {
-                                    _submitPop(context);
-                                  }
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  foregroundColor: Colors.white,
-                                  backgroundColor: !isAnySelectAnswer &&
-                                          personName.isNotEmpty
-                                      ? Colors.blue
-                                      : Colors.grey,
-                                ),
-                                child: const Text("Submit"),
-                              ),
-                              const SizedBox(
-                                width: defaultPadding,
-                              ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  // pauseStatus();
-                                  _navigateBack();
-                                  //   popupData.clear();
-                                  //   userEnteredDataPoints.clear();
-                                  //   myStatefulWidgetDataMap.clear();
-                                  //   numberController.clear();
-                                },
-                                child: const Text("Go Back"),
-                              ),
-                            ],
-                          )
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      foregroundColor: Colors.white,
+                                      backgroundColor: personName.isNotEmpty
+                                          ? Colors.blue
+                                          : Colors.grey,
+                                    ),
+                                    child: const Text("Save"),
+                                  ),
+                                  const SizedBox(width: defaultPadding),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      if (!isAnySelectAnswer &&
+                                          personName.isNotEmpty) {
+                                        _submitPop(context);
+                                      }
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      foregroundColor: Colors.white,
+                                      backgroundColor: !isAnySelectAnswer &&
+                                              personName.isNotEmpty
+                                          ? Colors.blue
+                                          : Colors.grey,
+                                    ),
+                                    child: const Text("Submit"),
+                                  ),
+                                  const SizedBox(
+                                    width: defaultPadding,
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      // pauseStatus();
+                                      _navigateBack();
+                                      //   popupData.clear();
+                                      //   userEnteredDataPoints.clear();
+                                      //   myStatefulWidgetDataMap.clear();
+                                      //   numberController.clear();
+                                    },
+                                    child: const Text("Go Back"),
+                                  ),
+                                ],
+                              )
 
-                        // else
-                        //     Row(
-                        //       mainAxisAlignment: MainAxisAlignment.center,
-                        //       children: [
-                        //         ElevatedButton(
-                        //           onPressed: () {
-                        //             _navigateBack();
-                        //           },
-                        //           child: const Text("Go Back"),
-                        //         ),
-                        //       ],
-                        //     ),
-                      ],
-                    ));
+                            else
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    ElevatedButton(
+                                      onPressed: () {
+                                   Navigator.pop(context);
+                                      },
+                                      child: const Text("Go Back"),
+                                    ),
+                                  ],
+                                ),
+                          ],
+                        )),
+                  );
       },
     );
   }
