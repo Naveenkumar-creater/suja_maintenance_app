@@ -23,12 +23,6 @@ class ApiConstant {
 
   static const String fromDate = "2023-08-01 10:00:00";
   static const String clientId = "vijay";
-//  static  makeApiRequest2(
-
-  
-//  ){
-//   print("makReques2");
-//  }
 
   Future<dynamic>  makeApiRequest({
     required String url,
@@ -36,6 +30,7 @@ class ApiConstant {
     required dynamic requestBody,
     Duration timeoutDuration = const Duration(seconds: 5),
   }) async {
+    
     try {
       final response = await http
           .post(

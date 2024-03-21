@@ -55,6 +55,7 @@ import '../../../constant/utils/exception/network_exception.dart';
 
 
 class LoginClient {
+  ApiConstant apiConstant=ApiConstant();
   Future<dynamic> post(String loginId, String password) async {
     ApiRequestDataModel requestData = ApiRequestDataModel(
         apiFor: "generate_access_token",

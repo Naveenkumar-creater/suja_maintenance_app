@@ -15,7 +15,7 @@ import '../../domain/usecase/login_usecase.dart';
 
 
 class LoginApiService {
-  Future<loginEntity?> login({
+  Future<loginEntity> login({
     required BuildContext context,
     required String loginId,
     required String password,

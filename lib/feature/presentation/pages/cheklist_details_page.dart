@@ -1529,6 +1529,30 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
         ?.responseData;
     final asset = response?.checklist ?? [];
 
+
+    // final DateFormat inputFormat = DateFormat('yyyy-MM-dd');
+
+
+
+
+
+
+     final  String? inspectionDate =
+        Provider.of<GetCheckListDetailsProvider>(context, listen: false)
+            .user
+            ?.responseData
+            .getChecklistDetails
+            .first
+            .acrpinspectiondate;
+            
+             final DateFormat dateinputformate = DateFormat("yyyy-mm-dd");
+
+    DateTime convertDate = dateinputformate.parse(inspectionDate!);
+  String  inspectiondate = DateFormat("yyyy-mm-dd").format(convertDate);
+    DateTime nowdate = DateTime.now();
+
+    String currentdate = DateFormat("yyyy-mm-dd").format(nowdate);
+
     final qrresponse = Provider.of<QrScannerProvider>(context, listen: false)
         .user
         ?.responseData;
@@ -1536,6 +1560,9 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
     final cheklistcurrentvalue =
         context.read<GetCheckListDetailsProvider>().user?.responseData;
 
+  
+
+   
     bool isAnySelectAnswer =
         selectedDropdownValues.any((value) => value.first == "Select Answer");
 
@@ -1618,15 +1645,15 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                       ),
                     ),
                   )
-                :     
-                 WillPopScope(
+                : WillPopScope(
                     onWillPop: () async {
                       return (widget.acrpinspectionstatus != 3 &&
-                                widget.acrpinspectionstatus != 4)?false:true;
+                              widget.acrpinspectionstatus != 4)
+                          ? false
+                          : true;
                     },
                     child: Scaffold(
                         appBar: AppBar(
-                            
                           automaticallyImplyLeading: true,
                           iconTheme: const IconThemeData(
                             color: Colors.white,
@@ -1650,14 +1677,101 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                       const SizedBox(
                                         height: 20,
                                       ),
-                                      Text(
-                                        widget.assetname ?? "",
-                                        style: const TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                        ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            widget.assetname ?? "",
+                                            style: const TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Text(
+                                            inspectiondate ?? "",
+                                            style: const TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          if (widget.acrpinspectionstatus == 1)
+                                            Container(
+                                              height: 30,
+                                              width: 75,
+                                              decoration: BoxDecoration(
+                                                  color: Colors.red,
+                                                  borderRadius:
+                                                      BorderRadius.circular(6)),
+                                              padding: EdgeInsets.all(6),
+                                              child: Text(
+                                                "Overdue",
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    color: Colors.black),
+                                              ),
+                                            ),
+                                          if (widget.acrpinspectionstatus == 2)
+                                            Container(
+                                              height: 35,
+                                              width: 100,
+                                              decoration: BoxDecoration(
+                                                  color: Colors.orange,
+                                                  borderRadius:
+                                                      BorderRadius.circular(6)),
+                                              padding: EdgeInsets.all(6),
+                                              child: Text(
+                                                "Inprogress",
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    color: Colors.black),
+                                              ),
+                                            ),
+                                          if (widget.acrpinspectionstatus ==
+                                                  3 ||
+                                              widget.acrpinspectionstatus == 4)
+                                            Container(
+                                              height: 35,
+                                              width: 100,
+                                              decoration: BoxDecoration(
+                                                  color: Colors.green,
+                                                  borderRadius:
+                                                      BorderRadius.circular(6)),
+                                              padding: EdgeInsets.all(6),
+                                              child: Text(
+                                                "Completed",
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    color: Colors.black),
+                                              ),
+                                            ),
+                                          if (widget.acrpinspectionstatus ==
+                                                  1 &&
+                                              inspectiondate == currentdate)
+                                            Container(
+                                              height: 30,
+                                              width: 75,
+                                              decoration: BoxDecoration(
+                                                  color: Colors.blue,
+                                                  borderRadius:
+                                                      BorderRadius.circular(6)),
+                                              padding: EdgeInsets.all(6),
+                                              child: Text(
+                                                "Open",
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    color: Colors.black),
+                                              ),
+                                            ),
+                                        ],
                                       ),
+
                                       //                                widget.pageId == 1?
 
                                       // Text(
@@ -2134,19 +2248,18 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                   ),
                                 ],
                               )
-
                             else
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    ElevatedButton(
-                                      onPressed: () {
-                                   Navigator.pop(context);
-                                      },
-                                      child: const Text("Go Back"),
-                                    ),
-                                  ],
-                                ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text("Go Back"),
+                                  ),
+                                ],
+                              ),
                           ],
                         )),
                   );
