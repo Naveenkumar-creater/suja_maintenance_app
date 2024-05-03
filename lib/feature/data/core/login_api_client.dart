@@ -81,7 +81,6 @@ class LoginClient {
         final responseJson = jsonDecode(response.body);
 
         // print('jsonDecode Response Body: ${responseJson}');
-
        final responseMsg = responseJson['response_msg'];
         if (responseMsg != "Login access denied") {
           return responseJson;
