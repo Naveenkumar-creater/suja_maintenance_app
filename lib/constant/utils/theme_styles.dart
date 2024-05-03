@@ -33,6 +33,7 @@ ThemeData themeData(BuildContext context, bool isDarkTheme) {
           brightness: isDarkTheme ? Brightness.light : Brightness.dark),
       cardColor: isDarkTheme ? const Color(0xFF424242) : Colors.white,
       canvasColor: isDarkTheme ? const Color(0xFF212121) : Colors.grey[50],
+      
       appBarTheme: AppBarTheme(
           backgroundColor:
               isDarkTheme ? const Color(0xFF212121) : const Color(0xFF25476A),

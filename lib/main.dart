@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:suja_shoie_app/feature/presentation/pages/barcode_generator_page.dart';
 import 'package:suja_shoie_app/feature/presentation/pages/login_page.dart';
 import 'package:suja_shoie_app/feature/presentation/pages/spalsh_page.dart';
 import 'package:suja_shoie_app/feature/presentation/providers/additional_datapoint_provider.dart';
@@ -97,7 +98,7 @@ class MyApp extends StatelessWidget {
               debugShowCheckedModeBanner: false,
               // ignore: prefer_const_constructors
               home: Scaffold(
-                body: const Loginpage(),
+                body: Loginpage(),
               ),
             );
           },
