@@ -1537,21 +1537,29 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
 
 
 
-     final  String? inspectionDate =
-        Provider.of<GetCheckListDetailsProvider>(context, listen: false)
-            .user
-            ?.responseData
-            .getChecklistDetails
-            .first
-            .acrpinspectiondate;
-            
-             final DateFormat dateinputformate = DateFormat("yyyy-mm-dd");
+final String? inspectionDate = Provider.of<GetCheckListDetailsProvider>(context, listen: false)
+    .user
+    ?.responseData
+    .getChecklistDetails
+    .first
+    .acrpinspectiondate;
 
-    DateTime convertDate = dateinputformate.parse(inspectionDate!);
-  String  inspectiondate = DateFormat("yyyy-mm-dd").format(convertDate);
-    DateTime nowdate = DateTime.now();
+final DateFormat dateInputFormat = DateFormat("yyyy-MM-dd");
+DateTime convertDate;
 
-    String currentdate = DateFormat("yyyy-mm-dd").format(nowdate);
+if (inspectionDate != null) {
+  convertDate = dateInputFormat.parse(inspectionDate);
+} else {
+  print('Inspection date is null');
+  convertDate = DateTime.now(); // Assign a default value if inspectionDate is null
+}
+
+String inspectiondate = DateFormat("yyyy-MM-dd").format(convertDate);
+DateTime nowdate = DateTime.now();
+String currentdate = DateFormat("yyyy-MM-dd").format(nowdate);
+
+print('Inspection Date: $inspectiondate');
+print('Current Date: $currentdate');
 
     final qrresponse = Provider.of<QrScannerProvider>(context, listen: false)
         .user
