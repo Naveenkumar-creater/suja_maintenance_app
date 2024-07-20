@@ -13,9 +13,11 @@ class GetCheckListdetailsDataSourceimpl extends GetCheckListDetailsDataSource {
   @override
   Future<ChecklistDetailsModel> getCheckListDetails(
       int planId, String toDate, String token,int acrpinspectionstatus) async {
-    try {
+
+            try {
       final response = await getCheckListDetailsClient.getCheckListDetails(
           planId, toDate, token,acrpinspectionstatus);
+
 
       if (response != null) {
         return ChecklistDetailsModel.fromJson(response);

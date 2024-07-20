@@ -98,7 +98,7 @@ class MyApp extends StatelessWidget {
               debugShowCheckedModeBanner: false,
               // ignore: prefer_const_constructors
               home: Scaffold(
-                body: const Loginpage(),
+                body: Loginpage()
               ),
             );
           },
