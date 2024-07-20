@@ -15,31 +15,10 @@
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize"
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
+            android:screenOrientation="landscape"
              >
            
-            <!-- android:screenOrientation="landscape" -->
+            
          
               
             <!-- Specifies an Android theme to apply to this Activity as soon as

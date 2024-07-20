@@ -543,7 +543,7 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
       }
       checklistRequest.checkPoints
           ?.add(checkpoint); // Add the checkpoint to the checklist
-    }
+    } 
 
     final requestBody = jsonEncode(checklistRequest.toJson());
 
@@ -835,7 +835,7 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                               onImagesCaptured: (updatedImages) {
                                 setState(() {
                                   capturedImages = updatedImages;
-                                  popupData[index]?['images'] = capturedImages;
+                                  popupData[index]?['images'] = capturedImages ?? "";
                                 });
                               },
                             ),
@@ -1529,29 +1529,36 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
         ?.responseData;
     final asset = response?.checklist ?? [];
 
-
     // final DateFormat inputFormat = DateFormat('yyyy-MM-dd');
 
-
-
-
-
-
-     final  String? inspectionDate =
+    final inspectionDetails =
         Provider.of<GetCheckListDetailsProvider>(context, listen: false)
             .user
             ?.responseData
-            .getChecklistDetails
-            .first
-            .acrpinspectiondate;
-            
-             final DateFormat dateinputformate = DateFormat("yyyy-mm-dd");
+            .getChecklistDetails;
 
-    DateTime convertDate = dateinputformate.parse(inspectionDate!);
-  String  inspectiondate = DateFormat("yyyy-mm-dd").format(convertDate);
+    final String? inspectionDate =
+        (inspectionDetails != null && inspectionDetails.isNotEmpty)
+            ? inspectionDetails.first.acrpinspectiondate
+            : null;
+
+    final DateFormat dateInputFormat = DateFormat("yyyy-MM-dd");
+    DateTime convertDate;
+
+    if (inspectionDate != null) {
+      convertDate = dateInputFormat.parse(inspectionDate);
+    } else {
+      print('Inspection date is null');
+      convertDate =
+          DateTime.now(); // Assign a default value if inspectionDate is null
+    }
+
+    String inspectiondate = DateFormat("yyyy-MM-dd").format(convertDate);
     DateTime nowdate = DateTime.now();
+    String currentdate = DateFormat("yyyy-MM-dd").format(nowdate);
 
-    String currentdate = DateFormat("yyyy-mm-dd").format(nowdate);
+    print('Inspection Date: $inspectiondate');
+    print('Current Date: $currentdate');
 
     final qrresponse = Provider.of<QrScannerProvider>(context, listen: false)
         .user
@@ -1560,9 +1567,6 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
     final cheklistcurrentvalue =
         context.read<GetCheckListDetailsProvider>().user?.responseData;
 
-  
-
-   
     bool isAnySelectAnswer =
         selectedDropdownValues.any((value) => value.first == "Select Answer");
 

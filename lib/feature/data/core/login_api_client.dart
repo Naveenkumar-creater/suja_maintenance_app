@@ -10,50 +10,6 @@ import 'package:suja_shoie_app/feature/data/model/request_data_model.dart';
 import '../../../constant/utils/exception/network_exception.dart';
 
 
-// class LoginClient {
-//   dynamic post(String loginId, String password) async {
-      
-//     ApiRequestDataModel requestData = ApiRequestDataModel(
-//         apiFor: "generate_access_token",
-//         loginPassword: password,
-//         clGroup: "patienttype",
-//         loginId: loginId);
-//     const timeoutDuration = const Duration(seconds: 10);
-//     try {
-//       http.Response response = await http.post(
-//         Uri.parse(ApiConstant.baseUrl),
-//         headers: {
-//           'Content-Type': 'application/json',
-//         },
-//         body: jsonEncode(requestData.toJson()),
-//       ). timeout(timeoutDuration);
-
-//       // ignore: avoid_print
-//       print(response.body);
-
-//       if (response.statusCode == 200) {  
-//         final responseJson = jsonDecode(response.body);
-//         final responseMsg = responseJson['response_msg'];
-//         if (responseMsg != "Login access denied") {
-//           return responseJson;
-//         } else {
-//           throw (responseMsg); // Custom exception for access denied
-//         }
-//       } else {
-//         throw ("Invalid LoginId or password");
-//       }
-//     }on TimeoutException {
-//       throw(
-//           'Connection timed out. Please check your internet connection.');
-//     } catch (e) {
-//       throw (e);
-//     }
-//   }
-// }
-
-
-
-
 class LoginClient {
   ApiConstant apiConstant=ApiConstant();
   Future<dynamic> post(String loginId, String password) async {
@@ -81,12 +37,12 @@ class LoginClient {
         final responseJson = jsonDecode(response.body);
 
         // print('jsonDecode Response Body: ${responseJson}');
-       final responseMsg = responseJson['response_msg'];
+      
+        final responseMsg = responseJson['response_msg'];
         if (responseMsg != "Login access denied") {
           return responseJson;
         } else {
-        throw http.ClientException(
-            responseMsg);
+          throw http.ClientException("Invalid Username or Password");
         }
       } else {
         throw http.ClientException(

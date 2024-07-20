@@ -10,7 +10,7 @@ import '../../data/core/datapoint_api_client.dart';
 import '../../data/data_source/Remote/remote_abstract/datapoint_data_source.dart';
 import '../../data/data_source/Remote/reomote_data_source/datapoint_data_source_impl.dart';
 import '../../data/repository/datapoint_repository_impl.dart';
-import '../../domain/entity/datapoint_entity.dart';
+import '../../domain/entity/datapoint_entity.dart'; 
 import '../providers/datapoint_provider.dart';
 
 class DataPointService {
