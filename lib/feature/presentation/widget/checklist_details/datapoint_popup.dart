@@ -104,7 +104,7 @@ class _DataPointsPopupState extends State<DataPointsPopup> {
             Container(
               child: Consumer<DataPointProvider>(
                 builder: (context, DetailsProvider, _) {
-                  final response = DetailsProvider.user?.responseData;
+                  final response = DetailsProvider.user;
                   final datapoint = response?.checklistDatapointsList;
 
                   return Column(

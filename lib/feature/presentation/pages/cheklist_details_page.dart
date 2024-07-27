@@ -21,6 +21,7 @@ import 'package:suja_shoie_app/feature/presentation/providers/get_checklist_deta
 import 'package:suja_shoie_app/feature/presentation/providers/qrscanner_provider.dart';
 import 'package:suja_shoie_app/feature/presentation/providers/theme_providers.dart';
 import 'package:suja_shoie_app/feature/presentation/widget/checklist_details/additional_datapoint.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../constant/utils/image_base64.dart';
 import '../../../constant/utils/show_snakbar.dart';
@@ -83,15 +84,141 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
   //   initiatePauseService.initiatePause(context: context, id: widget.planId);
   // }
   List<String> acrdpValues = [];
-  String getStatusIcon(int method) {
+
+  getStatusIcon(int method) {
     if (method == 1) {
-      return 'assets/images/eye.png';
+      return Image.asset(
+        "assets/images/Eye.png",
+        fit: BoxFit.cover,
+
+        width: 40, // You can set your desired width and height here
+        height: 40,
+      );
     } else if (method == 2) {
-      return 'assets/images/hand.png';
+      return Image.asset(
+        "assets/images/Hand.png",
+        fit: BoxFit.cover,
+
+        width: 40, // You can set your desired width and height here
+        height: 40,
+      );
     } else if (method == 3) {
-      return 'assets/images/ear.png';
-    } else {
-      return 'assets/images/Eye_hand_Images.png';
+      return Image.asset(
+        "assets/images/Ear.png",
+        fit: BoxFit.cover,
+
+        width: 40, // You can set your desired width and height here
+        height: 40,
+      );
+    } else if (method == 4) {
+      return Column(
+        children: [
+          Image.asset(
+            "assets/images/Eye.png",
+            fit: BoxFit.cover,
+
+            width: 40, // You can set your desired width and height here
+            height: 40,
+          ),
+          Image.asset(
+            "assets/images/Hand.png",
+            fit: BoxFit.cover,
+
+            width: 40, // You can set your desired width and height here
+            height: 40,
+          ),
+        ],
+      );
+    } else if (method == 5) {
+      return Text(
+        "Instrument",
+        style: TextStyle(fontSize: 14, color: Colors.black),
+      );
+    } else if (method == 6) {
+      return Text(
+        "Operation",
+        style: TextStyle(fontSize: 14, color: Colors.black),
+      );
+    } else if (method == 7) {
+      return Text(
+        "Spill Kit",
+        style: TextStyle(fontSize: 14, color: Colors.black),
+      );
+    } else if (method == 8) {
+      return Text(
+        "Waste Cloth",
+        style: TextStyle(fontSize: 14, color: Colors.black),
+      );
+    } else if (method == 9) {
+      return Column(
+        children: [
+          Image.asset(
+            "assets/images/Hand.png",
+            fit: BoxFit.cover,
+
+            width: 40, // You can set your desired width and height here
+            height: 40,
+          ),
+          Image.asset(
+            "assets/images/Ear.png",
+            fit: BoxFit.cover,
+
+            width: 40, // You can set your desired width and height here
+            height: 40,
+          ),
+        ],
+      );
+    } else if (method == 10) {
+      return Image.asset(
+        "assets/images/Nose.png",
+        fit: BoxFit.cover,
+
+        width: 40, // You can set your desired width and height here
+        height: 40,
+      );
+    } else if (method == 11) {
+      return Column(
+        children: [
+          Image.asset(
+            "assets/images/Eye.png",
+            fit: BoxFit.cover,
+
+            width: 40, // You can set your desired width and height here
+            height: 40,
+          ),
+          Image.asset(
+            "assets/images/Ear.png",
+            fit: BoxFit.cover,
+
+            width: 40, // You can set your desired width and height here
+            height: 40,
+          ),
+        ],
+      );
+    } else if (method == 12) {
+      return Image.asset(
+        "assets/images/Hand.png",
+        fit: BoxFit.cover,
+
+        width: 40, // You can set your desired width and height here
+        height: 40,
+      );
+    } else if (method == 13) {
+      return Column(
+        children: [
+          Text(
+            "Operation",
+            style: TextStyle(fontSize: 14, color: Colors.black),
+          ),
+          Image.asset(
+            "assets/images/Ear.png",
+            fit: BoxFit.cover,
+
+            width: 40, // You can set your desired width and height here
+            height: 40,
+          ),
+        ],
+      );
     }
   }
 
@@ -190,8 +317,7 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
     await _fetchDataPoints(index);
     var fetchdata = Provider.of<DataPointProvider>(context, listen: false)
         .user
-        ?.responseData
-        .checklistDatapointsList;
+        ?.checklistDatapointsList;
 
     setState(() {
       final String previousValue = selectedDropdownValues[index].first;
@@ -426,17 +552,12 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
       final responseData =
           Provider.of<DataPointProvider>(context, listen: false)
               .user
-              ?.responseData;
+              ?.checklistDatapointsList;
 
-      final datapointDescriptions = responseData?.checklistDatapointsList
-              .map((e) => e.amdpDatapointDescription)
-              .toList() ??
-          [];
+      final datapointDescriptions =
+          responseData?.map((e) => e.amdpDatapointDescription).toList() ?? [];
 
-      final dataAcrdp = responseData?.checklistDatapointsList
-              .map((e) => e.acrdpId)
-              .toList() ??
-          [];
+      final dataAcrdp = responseData?.map((e) => e.acrdpId).toList() ?? [];
 
       final combinedDatapoint = EnteredDataPoints[index] ?? [];
 
@@ -543,7 +664,7 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
       }
       checklistRequest.checkPoints
           ?.add(checkpoint); // Add the checkpoint to the checklist
-    } 
+    }
 
     final requestBody = jsonEncode(checklistRequest.toJson());
 
@@ -713,9 +834,9 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
 
     final serverImage = Provider.of<DataPointProvider>(context, listen: false)
         .user
-        ?.responseData;
+        ?.detailImageUrl;
 
-    final imageUrls = serverImage?.detailImageUrl ?? [];
+    final imageUrls = serverImage ?? [];
 
     List<File?> capturedImg = []; // Initialize capturedImg with an empty list
 
@@ -799,6 +920,7 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
       return double.parse(trimmedValue) != null;
     }
 
+    // ignore: use_build_context_synchronously
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -835,7 +957,8 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                               onImagesCaptured: (updatedImages) {
                                 setState(() {
                                   capturedImages = updatedImages;
-                                  popupData[index]?['images'] = capturedImages ?? "";
+                                  popupData[index]?['images'] =
+                                      capturedImages ?? "";
                                 });
                               },
                             ),
@@ -899,7 +1022,7 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                       ),
                       Consumer<DataPointProvider>(
                         builder: (context, DetailsProvider, _) {
-                          final response = DetailsProvider.user?.responseData;
+                          final response = DetailsProvider.user;
                           final datapoint = response?.checklistDatapointsList;
 
                           acrdDescription =
@@ -1061,11 +1184,9 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                                               SizedBox(
                                                                 width: 220,
                                                                 child: Text(
-                                                                    "${item?.amdpDatapointDescription}  :"),
+                                                                    "${item?.amdpDatapointDescription}  "),
                                                               ),
-                                                              if (item!
-                                                                  .amtsLowerRangeValue
-                                                                  .isNotEmpty)
+                                                             if (item?.amtsLowerRangeValue?.isNotEmpty ?? false)
                                                                 SizedBox(
                                                                   width: 100,
                                                                   child: Row(
@@ -1079,19 +1200,18 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                                                     ],
                                                                   ),
                                                                 )
+                                                                
                                                               else
                                                                 SizedBox(
                                                                   width: 100,
                                                                   child: Text(
-                                                                      "${item?.amtsValue}"),
+                                                                      item?.amtsValue ?? ""  ),
                                                                 ),
                                                               SizedBox(
-                                                                width: 20,
+                                                                width: 28
+                                                                ,
                                                               ),
-                                                              const Text(":"),
-                                                              const SizedBox(
-                                                                width: 8,
-                                                              ),
+                                                              
                                                               SizedBox(
                                                                 width: 150,
                                                                 height:
@@ -1153,7 +1273,7 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                                                               TextStyle(
                                                                             color: datapointControllers[index].text.isEmpty
                                                                                 ? Colors.grey
-                                                                                : ((lowerRangeValue != null && upperRangeValue != null) && isValidInteger(lowerRangeValue) && isValidInteger(upperRangeValue) && (double.tryParse(lowerRangeValue) ?? 0) <= (double.tryParse(datapointControllers[index].text) ?? 0) && (double.tryParse(upperRangeValue!) ?? 0) >= (double.tryParse(datapointControllers[index].text) ?? 0)) || ((isValidInteger(item!.amtsValue)) && (isValidInteger(datapointControllers[index].text) ?? false) && (int.tryParse(item!.amtsValue) ?? 0) == (int.tryParse(datapointControllers[index].text) ?? 0))
+                                                                                : ((lowerRangeValue != null && upperRangeValue != null) && isValidInteger(lowerRangeValue) && isValidInteger(upperRangeValue) && (double.tryParse(lowerRangeValue) ?? 0) <= (double.tryParse(datapointControllers[index].text) ?? 0) && (double.tryParse(upperRangeValue) ?? 0) >= (double.tryParse(datapointControllers[index].text) ?? 0)) || ((isValidInteger(item?.amtsValue ?? "")) && (isValidInteger(datapointControllers[index].text) ?? false) && (int.tryParse(item?.amtsValue ?? "") ?? 0) == (int.tryParse(datapointControllers[index].text) ?? 0))
                                                                                     ? Colors.black
                                                                                     : Colors.orange,
                                                                           ),
@@ -2009,8 +2129,7 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                     String decodedTamilText = utf8.decode(
                                         asset.checkpoint.runes.toList(),
                                         allowMalformed: true);
-                                    final statusIcon =
-                                        getStatusIcon(asset.methods);
+                                    final statusIcon = asset.methods;
                                     final role = responsibilityRole(
                                         asset.responsibility);
 
@@ -2047,9 +2166,9 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                               Expanded(
                                                 child: Container(
                                                   alignment: Alignment.center,
-                                                  height: 60,
+                                                  height: 100,
                                                   child:
-                                                      Image.asset(statusIcon),
+                                                      getStatusIcon(statusIcon),
                                                 ),
                                               ),
                                               Expanded(

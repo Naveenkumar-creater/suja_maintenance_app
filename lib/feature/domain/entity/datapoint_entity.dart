@@ -1,63 +1,35 @@
 import 'package:equatable/equatable.dart';
 
 
+
 class DataPointEntity extends Equatable {
-  final int? responseCode;
-  final ResponseData responseData;
-  final int wsReqId;
-  final String responseMsg;
-
-  const DataPointEntity({
-    required this.responseCode,
-    required this.responseData,
-    required this.wsReqId,
-    required this.responseMsg,
-  });
-
-  @override
-  List<Object?> get props => [responseCode, responseData, wsReqId, responseMsg];
-}
-
-class ResponseData {
 
   final List<DataPointDetailsEntity> checklistDatapointsList;
     final List<String> detailImageUrl;
 
-  ResponseData({
+  DataPointEntity({
  
     required this.checklistDatapointsList,
        required this.detailImageUrl,
   });
-
-  factory ResponseData.fromJson(Map<String, dynamic> json) {
-    return ResponseData(
   
-      checklistDatapointsList: List<DataPointDetailsEntity>.from(
-        json['checklist_datapoints_list'].map(
-          (detailJson) => DataPointDetailsEntity.fromJson(detailJson),
-        ),
-      ),
-          detailImageUrl: List<String>.from(json['detail_image_url']),
-    );
-  }
+  @override
+  // TODO: implement props
+  List<Object?> get props => [checklistDatapointsList,detailImageUrl];
+
+ 
 
 }
 
-class DataPointDetailsEntity {
-  final int acrdpAcrdId;
-  // final int amdpDatapointId;
-  final int acrdpId;
-  // final int acrdId;
-  final String datapointValue;
-  // final int acrdpAcmdpId;
-  final int acrdpAmdpDatapointId;
-  final String amdpDatapointDescription;
-    // final String aptmName;
-    //  final int amtsLowerRangeValue;
-      final String amtsLowerRangeValue;
-     final String  amtsValue;
-    //  final int  amtsUpperRangeValue;  
-       final String amtsUpperRangeValue;
+class DataPointDetailsEntity extends Equatable {
+  final int? acrdpAcrdId;
+    final int? acrdpId;
+    final int? acrdpAmdpDatapointId;
+    final String? amdpDatapointDescription;
+    final String? datapointValue;
+    final String? amtsValue;
+    final String? amtsLowerRangeValue;
+    final String? amtsUpperRangeValue;
 
     
   DataPointDetailsEntity({
@@ -74,22 +46,18 @@ class DataPointDetailsEntity {
      required this.amtsValue,
      required this.amtsUpperRangeValue,
   });
+  
+  @override
+  // TODO: implement props
+  List<Object?> get props => [
+    acrdpAcrdId,acrdpId,datapointValue,acrdpAmdpDatapointId,amdpDatapointDescription,amtsLowerRangeValue,amtsValue,amtsUpperRangeValue
 
-  factory DataPointDetailsEntity.fromJson(Map<String, dynamic> json) {
-    return DataPointDetailsEntity(
-      acrdpAcrdId: json['acrdp_acrd_id'],
-      // amdpDatapointId: json['amdp_datapoint_id'],
-      acrdpId: json['acrdp_id'],
-      // acrdId: json['acrdp_datapoint_notes'],
-      datapointValue: json['acrdp_datapoint_value'],
-      // acrdpAcmdpId: json['acrdp_acmdp_id'],
-      acrdpAmdpDatapointId: json['acrdp_amdp_datapoint_id'],
-      amdpDatapointDescription: json['amdp_datapoint_description'],
-      // aptmName:json['aptm_name'],
-      amtsLowerRangeValue:json['amts_lower_range_value'],
-      amtsValue:json['amts_value'],
-      amtsUpperRangeValue:json['amts_upper_range_value']
-    );
-  }
+
+  ];
+
+ 
 }
+
+
+
 
