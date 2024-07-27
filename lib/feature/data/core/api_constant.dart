@@ -44,7 +44,7 @@ class ApiConstant {
       if (response.statusCode == 200) {
         // ignore: avoid_print
         print(jsonDecode(response.body));
-        return jsonDecode(response. body);
+        return jsonDecode(response.body);
       }
     }on TimeoutException {
       throw ("Sorry, the request took too long to process. Please try again later.");
