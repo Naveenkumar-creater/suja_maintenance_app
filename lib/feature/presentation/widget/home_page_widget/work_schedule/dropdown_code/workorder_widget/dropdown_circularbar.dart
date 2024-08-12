@@ -34,7 +34,7 @@ class _DropdownMenuCircularState extends State<DropdownMenuCircular> {
     'ALL',
     'Open',
     'In Progress',
-    'Overdue',
+    // 'Overdue',
   ];
 
   @override
@@ -106,10 +106,10 @@ class _DropdownMenuCircularState extends State<DropdownMenuCircular> {
         text = 'In Progress';
         content = widget.complete;
         break;
-      case 3:
-        text = 'Overdue';
-        content = widget.overdue;
-        break;
+      // case 3:
+      //   text = 'Overdue';
+      //   content = widget.overdue;
+      //   break;
       default:
         text = '';
         content = const SizedBox();

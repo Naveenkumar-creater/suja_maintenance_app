@@ -49,7 +49,7 @@ class _DropdownMenuExampleState extends State<DropdownMenuWorkOrder> {
     'Open',
     'In Progress',
     'Complete',
-    'Overdue',
+    // 'Overdue',
     'Reject'
   ];
 
@@ -58,12 +58,12 @@ class _DropdownMenuExampleState extends State<DropdownMenuWorkOrder> {
     Colors.blue,
     Colors.orange,
     Colors.green,
-    Colors.red,
+    // Colors.red,
     Colors.black,
   ];
 
 
- List<int> statusCounts = [0, 0, 0, 0, 0, 0]; // Initialize counts for each status
+ List<int> statusCounts = [0, 0, 0, 0, 0]; // Initialize counts for each status
 
   @override
   void initState() {
@@ -79,9 +79,9 @@ void _loadStatusCount(int index) {
     count = 101;
   }
 
-  if (count == 4) {
-    count = 100;
-  }
+  // if (count == 4) {
+  //   count = 100;
+  // }
 
   ChecklistStatusService()
       .getStatusCount(

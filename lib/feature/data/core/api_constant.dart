@@ -12,6 +12,7 @@ class ApiConstant {
   static String baseUrl = "";
 
   static Future<void> initialize() async {
+    
     try {
       final configJson = await rootBundle.loadString('assets/config.json');
       final config = json.decode(configJson);
@@ -19,6 +20,7 @@ class ApiConstant {
     } catch (e) {
       print("Error loading configuration: $e");
     }
+
   }
 
   static const String fromDate = "2023-08-01 10:00:00";
@@ -28,7 +30,7 @@ class ApiConstant {
     required String url,
     required Map<String, String> headers,
     required dynamic requestBody,
-    Duration timeoutDuration = const Duration(seconds: 5),
+    Duration timeoutDuration = const Duration(seconds: 25) ,
   }) async {
     
     try {

@@ -24,7 +24,7 @@ class CheckListService {
       String token = pref.getString("client_token") ?? "";
 
       DateTime now = DateTime.now();
-      String toDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
+      String toDate = DateFormat('yyyy-MM-dd').format(now);
 
       // String token = "admin-686";
 

@@ -71,7 +71,7 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
   bool isOperatorIdEntered = false;
   bool showDataPointsButton = false;
   // Store the entered data for each popup
-  Map<int, Map<String, dynamic>> popupData = {};
+    Map<int, Map<String, dynamic>> popupData = {};
   List<List<String>> selectedDropdownValues = [];
 
   // Step 2: Create a map to store the fetched "Data Points" data
@@ -860,8 +860,7 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
       final uniqueUrl = Uri.parse(imageUrl)
           .replace(
               query:
-                  'timestamp=${DateTime.now().millisecondsSinceEpoch}-${UniqueKey().toString()}')
-          .toString();
+                'timestamp=${DateTime.now().millisecondsSinceEpoch}-${UniqueKey().toString()}').toString();
 
       // Download the image and convert it to a file
       final response = await http.get(Uri.parse(uniqueUrl));
@@ -1825,23 +1824,23 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                           SizedBox(
                                             width: 10,
                                           ),
-                                          if (widget.acrpinspectionstatus == 1)
-                                            Container(
-                                              height: 30,
-                                              width: 75,
-                                              decoration: BoxDecoration(
-                                                  color: Colors.red,
-                                                  borderRadius:
-                                                      BorderRadius.circular(6)),
-                                              padding: EdgeInsets.all(6),
-                                              child: Text(
-                                                "Overdue",
-                                                style: TextStyle(
-                                                    fontSize: 16,
-                                                    color: Colors.black),
-                                              ),
-                                            ),
-                                          if (widget.acrpinspectionstatus == 2)
+                                          // if (widget.acrpinspectionstatus == 1)
+                                          //   Container(
+                                          //     height: 30,
+                                          //     width: 75,
+                                          //     decoration: BoxDecoration(
+                                          //         color: Colors.red,
+                                          //         borderRadius:
+                                          //             BorderRadius.circular(6))
+                                          //     padding: EdgeInsets.all(6),
+                                          //     child: Text(
+                                          //       "Overdue",
+                                          //       style: TextStyle(
+                                          //           fontSize: 16,
+                                          //           color: Colors.black),
+                                          //     ),
+                                          //   )
+                                           if(widget.acrpinspectionstatus == 2)
                                             Container(
                                               height: 35,
                                               width: 100,
@@ -1856,8 +1855,8 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                                     fontSize: 16,
                                                     color: Colors.black),
                                               ),
-                                            ),
-                                          if (widget.acrpinspectionstatus ==
+                                            )
+                                         else if (widget.acrpinspectionstatus ==
                                                   3 ||
                                               widget.acrpinspectionstatus == 4)
                                             Container(
@@ -1874,8 +1873,8 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                                     fontSize: 16,
                                                     color: Colors.black),
                                               ),
-                                            ),
-                                          if (widget.acrpinspectionstatus ==
+                                            )
+                                          else if (widget.acrpinspectionstatus ==
                                                   1 &&
                                               inspectiondate == currentdate)
                                             Container(
@@ -2303,8 +2302,8 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                 children: [
                                   ElevatedButton(
                                     onPressed: () async {
-                                      if (personName.isNotEmpty &&
-                                          !isTextFieldVisible) {
+                                      // if (personName.isNotEmpty &&
+                                      //     !isTextFieldVisible) {
                                         try {
                                           final response =
                                               await submitChecklist(context,
@@ -2328,7 +2327,7 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                             ),
                                           );
                                         }
-                                      }
+                                 
                                     },
                                     style: ElevatedButton.styleFrom(
                                       foregroundColor: Colors.white,
