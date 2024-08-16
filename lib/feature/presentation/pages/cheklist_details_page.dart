@@ -1062,7 +1062,7 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                 final initialValue =
                                     datapoint[index].datapointValue.toString();
                                 return TextEditingController(
-                                    text: initialValue);
+                                    text: initialValue); 
                               } else {
                                 // Handle the case where dataPointValues is shorter than datapoint
                                 return TextEditingController();
@@ -1240,31 +1240,58 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                                                               FloatingLabelBehavior.never,
                                                                           contentPadding:
                                                                               EdgeInsets.all(defaultPadding),
+                                                                               errorStyle: TextStyle(
+          fontSize: 10.0, // Adjust the font size as needed
+          height: 0.10, // Adjust the height to control spacing
+        ), 
+
                                                                           enabledBorder:
                                                                               OutlineInputBorder(
                                                                             borderSide:
                                                                                 BorderSide(
                                                                               color: datapointControllers[index].text.isEmpty
                                                                                   ? Colors.grey
-                                                                                  : ((lowerRangeValue != null && upperRangeValue != null) && isValidInteger(lowerRangeValue) && isValidInteger(upperRangeValue) && (int.tryParse(lowerRangeValue) ?? 0) <= (double.tryParse(datapointControllers[index].text) ?? 0) && (int.tryParse(upperRangeValue!) ?? 0) >= (double.tryParse(datapointControllers[index].text) ?? 0)) || (datapointControllers[index].text == item!.amtsValue) // Compare entered value with expected value
-                                                                                      ? Colors.black
+                                                                                  : (((lowerRangeValue != null && upperRangeValue != null) &&
+                                                                              isValidInteger(lowerRangeValue) &&
+                                                                              isValidInteger(upperRangeValue) &&
+                                                                              (double.tryParse(lowerRangeValue) ?? 0) <= (double.tryParse(datapointControllers[index].text) ?? 0) &&
+                                                                              (double.tryParse(upperRangeValue!) ?? 0) >= (double.tryParse(datapointControllers[index].text) ?? 0)) ||
+                                                                          (datapointControllers[index].text == item!.amtsValue) // Compare entered value with expected value
+                                                                      ) // Compare entered value with expected value
+                                                                                      ? Colors.grey
                                                                                       : Colors.orange, // Border color when focused
                                                                               width: 2.0, // Border width when focused
                                                                             ),
                                                                           ),
-                                                                          focusedBorder:
+                                                                          
+                                                                          border:
                                                                               OutlineInputBorder(
                                                                             borderSide:
                                                                                 BorderSide(
                                                                               color: datapointControllers[index].text.isEmpty
-                                                                                  ? Colors.grey
-                                                                                  : ((lowerRangeValue != null && upperRangeValue != null) && isValidInteger(lowerRangeValue) && isValidInteger(upperRangeValue) && (double.tryParse(lowerRangeValue) ?? 0) <= (double.tryParse(datapointControllers[index].text) ?? 0) && (double.tryParse(upperRangeValue!) ?? 0) >= (double.tryParse(datapointControllers[index].text) ?? 0)) || (datapointControllers[index].text == item!.amtsValue) // Compare entered value with expected value
-                                                                                      ? Colors.black
+                                                                                  ? const Color.fromARGB(255, 84, 57, 57)
+                                                                                  : (((lowerRangeValue != null && upperRangeValue != null) && isValidInteger(lowerRangeValue) && isValidInteger(upperRangeValue) && (double.tryParse(lowerRangeValue) ?? 0) <= (double.tryParse(datapointControllers[index].text) ?? 0) && (double.tryParse(upperRangeValue!) ?? 0) >= (double.tryParse(datapointControllers[index].text) ?? 0)) || (datapointControllers[index].text == item!.amtsValue) )// Compare entered value with expected value
+                                                                                      ? Colors.grey
                                                                                       : Colors.orange,
 
                                                                               width: 2.0, // Border width when focused
                                                                             ),
                                                                           ),
+                                                                         focusedBorder:
+                                                                              OutlineInputBorder(
+                                                                            borderSide:
+                                                                                BorderSide(
+                                                                              color: datapointControllers[index].text.isEmpty
+                                                                                  ? const Color.fromARGB(255, 84, 57, 57)
+                                                                                  : ((lowerRangeValue != null && upperRangeValue != null) && isValidInteger(lowerRangeValue) && isValidInteger(upperRangeValue) && (double.tryParse(lowerRangeValue) ?? 0) <= (double.tryParse(datapointControllers[index].text) ?? 0) && (double.tryParse(upperRangeValue!) ?? 0) >= (double.tryParse(datapointControllers[index].text) ?? 0)) || (datapointControllers[index].text == item!.amtsValue) // Compare entered value with expected value
+                                                                                      ? Colors.grey
+                                                                                      : Colors.orange,
+
+                                                                              width: 2.0, // Border width when focused
+                                                                            ),
+                                                                          ),
+
+                                                                          
                                                                           hintText: dataPointValues.isNotEmpty
                                                                               ? 'Enter Value'
                                                                               : '',
@@ -2277,7 +2304,7 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                                                   index);
                                                             },
                                                             child: const Text(
-                                                              "Add Inputs",
+                                                              "Add Input",
                                                               style: TextStyle(
                                                                 fontSize: 13,
                                                               ),
