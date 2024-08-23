@@ -45,25 +45,25 @@ class _DropdownMenuExampleState extends State<DropdownMenuWorkOrder> {
   
 
   List<String> dropdownOptions = [
-    'Pending',
+    // 'Pending',
     'Open',
     'In Progress',
     'Complete',
     // 'Overdue',
-    'Reject'
+    // 'Reject'
   ];
 
   List<Color> valueColors = [
-    Colors.indigo,
+    // Colors.indigo,
     Colors.blue,
     Colors.orange,
     Colors.green,
     // Colors.red,
-    Colors.black,
+    // Colors.black,
   ];
 
 
- List<int> statusCounts = [0, 0, 0, 0, 0]; // Initialize counts for each status
+ List<int> statusCounts = [0, 0, 0]; // Initialize counts for each status
 
   @override
   void initState() {
@@ -74,10 +74,7 @@ class _DropdownMenuExampleState extends State<DropdownMenuWorkOrder> {
 
 void _loadStatusCount(int index) {
   bool isLoading = true; 
-  int count = index;
-    if (count == 0) {
-    count = 101;
-  }
+  int count = index + 1;
 
   // if (count == 4) {
   //   count = 100;
