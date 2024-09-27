@@ -507,6 +507,8 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
         showDataPointsButton = true;
       } else {
         showDataPointsButton = false;
+
+        
       }
     });
   }
@@ -1982,8 +1984,11 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                         height: 20,
                                       ),
                                       Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text(
+                                          Container(
+                                            child: Row(children: [
+                                                      Text(
                                             widget.assetname ?? "",
                                             style: const TextStyle(
                                               fontSize: 20,
@@ -1991,7 +1996,7 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                               color: Colors.white,
                                             ),
                                           ),
-                                          SizedBox(
+                                           SizedBox(
                                             width: 10,
                                           ),
                                           Text(
@@ -2005,23 +2010,7 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                           SizedBox(
                                             width: 10,
                                           ),
-                                          // if (widget.acrpinspectionstatus == 1)
-                                          //   Container(
-                                          //     height: 30,
-                                          //     width: 75,
-                                          //     decoration: BoxDecoration(
-                                          //         color: Colors.red,
-                                          //         borderRadius:
-                                          //             BorderRadius.circular(6))
-                                          //     padding: EdgeInsets.all(6),
-                                          //     child: Text(
-                                          //       "Overdue",
-                                          //       style: TextStyle(
-                                          //           fontSize: 16,
-                                          //           color: Colors.black),
-                                          //     ),
-                                          //   )
-                                          if (widget.acrpinspectionstatus == 2)
+                                           if (widget.acrpinspectionstatus == 2)
                                             Container(
                                               height: 35,
                                               width: 100,
@@ -2075,8 +2064,63 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                                     color: Colors.black),
                                               ),
                                             ),
+                                            SizedBox(width:20),
+                                        
+                                                                                                       SizedBox(width:20),
+
+                                            Row(
+                                                children: [
+                                                     Text(
+                                                  "Ref No - ",
+                                                  style: const TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white,
+                                                  ),
+                                                                                        ),
+                                                  Text(
+                                                  "${checklist.first.documentNo ?? 0}",
+                                                  style: const TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white,
+                                                  ),
+                                                                                        ),
+                                                ],
+                                                                                          ),
+                                            ]
+                                            
+                                            ),
+
+                                          ),
+
+                                  
+                                         
+                          
+                                           
+                                          // if (widget.acrpinspectionstatus == 1)
+                                          //   Container(
+                                          //     height: 30,
+                                          //     width: 75,
+                                          //     decoration: BoxDecoration(
+                                          //         color: Colors.red,
+                                          //         borderRadius:
+                                          //             BorderRadius.circular(6))
+                                          //     padding: EdgeInsets.all(6),
+                                          //     child: Text(
+                                          //       "Overdue",
+                                          //       style: TextStyle(
+                                          //           fontSize: 16,
+                                          //           color: Colors.black),
+                                          //     ),
+                                          //   )
+                                         
                                         ],
                                       ),
+
+
+
+
 
                                       //                                widget.pageId == 1?
 
@@ -2096,151 +2140,174 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                       //                                 ),
                                       //                               ),
 
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            chekListname,
-                                            style: const TextStyle(
-                                              fontSize: 25,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
+                                      Container(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              chekListname,
+                                              style: const TextStyle(
+                                                fontSize: 25,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                              ),
                                             ),
-                                          ),
-                                          if (isTextFieldVisible)
-                                            // Show TextField conditionally
-                                            if (widget.acrpinspectionstatus ==
-                                                    3 ||
-                                                widget.acrpinspectionstatus ==
-                                                    4)
-                                              Text(
-                                                checklist.first.personfname,
-                                                style: const TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.white,
-                                                ),
-                                              )
-                                            else
-                                              SizedBox(
-                                                width: 300,
-                                                height: 50,
-                                                child: Row(
-                                                  children: [
-                                                    Expanded(
-                                                      child: Form(
-                                                        key: operatorFormKey,
-                                                        child: Container(
-                                                          margin: const EdgeInsets
-                                                                  .only(
-                                                              left:
-                                                                  defaultPadding *
-                                                                      2),
-                                                          decoration: const BoxDecoration(
-                                                              borderRadius: BorderRadius
-                                                                  .all(Radius
-                                                                      .circular(
-                                                                          5))),
-                                                          child: TextFormField(
-                                                            controller:
-                                                                numberController,
-                                                            style:
-                                                                const TextStyle(
-                                                                    color: Colors
-                                                                        .black),
-                                                            validator: (value) {
-                                                              if (value ==
-                                                                      null ||
-                                                                  value
-                                                                      .isEmpty) {
-                                                                return 'Please enter Operator Id';
-                                                              }
-                                                              if (value.contains(
-                                                                  RegExp(
-                                                                      r'[!@#$%^&*(),.?":{}|<>]'))) {
-                                                                return 'Operator Id cannot contain special symbols';
-                                                              }
-                                                              if (value
-                                                                  .contains(
-                                                                      ' ')) {
-                                                                return 'Operator Id cannot contain spaces';
-                                                              }
-                                                              return null;
-                                                            },
-                                                            decoration:
-                                                                InputDecoration(
-                                                              hintText:
-                                                                  'Enter Operator Id',
-                                                              hintStyle: const TextStyle(
-                                                                  color: Colors
-                                                                      .black45),
-                                                              filled: true,
-                                                              fillColor:
-                                                                  Colors.white,
-                                                              labelStyle:
+
+                                                 Row(
+                                                children: [
+                                                     Text(
+                                                  "Revison No - ",
+                                                  style: const TextStyle(
+                                                    fontSize:20,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white,
+                                                  ),
+                                                                                        ),
+                                                  Text(
+                                                  "${checklist.first.versionId ?? 0}",
+                                                  style: const TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white,
+                                                  ),
+                                                                                        ),
+                                                ],
+                                                                                          ),
+                                            if (isTextFieldVisible)
+                                              // Show TextField conditionally
+                                              if (widget.acrpinspectionstatus ==
+                                                      3 ||
+                                                  widget.acrpinspectionstatus ==
+                                                      4)
+                                                Text(
+                                                  checklist.first.personfname,
+                                                  style: const TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white,
+                                                  ),
+                                                )
+                                              else
+                                                SizedBox(
+                                                  width: 300,
+                                                  height: 50,
+                                                  child: Row(
+                                                    children: [
+                                                      Expanded(
+                                                        child: Form(
+                                                          key: operatorFormKey,
+                                                          child: Container(
+                                                            margin: const EdgeInsets
+                                                                    .only(
+                                                                left:
+                                                                    defaultPadding *
+                                                                        2),
+                                                            decoration: const BoxDecoration(
+                                                                borderRadius: BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            5))),
+                                                            child: TextFormField(
+                                                              controller:
+                                                                  numberController,
+                                                              style:
                                                                   const TextStyle(
-                                                                      fontSize:
-                                                                          12),
-                                                              contentPadding:
-                                                                  const EdgeInsets
-                                                                          .only(
-                                                                      left: 20),
-                                                              enabledBorder:
-                                                                  OutlineInputBorder(
-                                                                borderSide: BorderSide(
+                                                                      color: Colors
+                                                                          .black),
+                                                              validator: (value) {
+                                                                if (value ==
+                                                                        null ||
+                                                                    value
+                                                                        .isEmpty) {
+                                                                  return 'Please enter Operator Id';
+                                                                }
+                                                                if (value.contains(
+                                                                    RegExp(
+                                                                        r'[!@#$%^&*(),.?":{}|<>]'))) {
+                                                                  return 'Operator Id cannot contain special symbols';
+                                                                }
+                                                                if (value
+                                                                    .contains(
+                                                                        ' ')) {
+                                                                  return 'Operator Id cannot contain spaces';
+                                                                }
+                                                                return null;
+                                                              },
+                                                              decoration:
+                                                                  InputDecoration(
+                                                                hintText:
+                                                                    'Enter Operator Id',
+                                                                hintStyle: const TextStyle(
                                                                     color: Colors
-                                                                        .blueGrey
-                                                                        .shade50),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            5),
-                                                              ),
-                                                              focusedBorder:
-                                                                  OutlineInputBorder(
-                                                                borderSide: BorderSide(
-                                                                    color: Colors
-                                                                        .blueGrey
-                                                                        .shade50),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            5),
+                                                                        .black45),
+                                                                filled: true,
+                                                                fillColor:
+                                                                    Colors.white,
+                                                                labelStyle:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            12),
+                                                                contentPadding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        left: 20),
+                                                                enabledBorder:
+                                                                    OutlineInputBorder(
+                                                                  borderSide: BorderSide(
+                                                                      color: Colors
+                                                                          .blueGrey
+                                                                          .shade50),
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              5),
+                                                                ),
+                                                                focusedBorder:
+                                                                    OutlineInputBorder(
+                                                                  borderSide: BorderSide(
+                                                                      color: Colors
+                                                                          .blueGrey
+                                                                          .shade50),
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              5),
+                                                                ),
                                                               ),
                                                             ),
                                                           ),
                                                         ),
                                                       ),
-                                                    ),
-                                                    TextButton(
-                                                      onPressed: () {
-                                                        if (operatorFormKey
-                                                                .currentState
-                                                                ?.validate() ==
-                                                            true) {
-                                                          handleSubmit();
-                                                        }
-                                                      },
-                                                      child: const Text(
-                                                        'OK',
-                                                        style: TextStyle(
-                                                          color: Colors.white,
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          if (operatorFormKey
+                                                                  .currentState
+                                                                  ?.validate() ==
+                                                              true) {
+                                                            handleSubmit();
+                                                          }
+                                                        },
+                                                        child: const Text(
+                                                          'OK',
+                                                          style: TextStyle(
+                                                            color: Colors.white,
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  ],
+                                                    ],
+                                                  ),
+                                                ),
+                                            if (!isTextFieldVisible)
+                                              Text(
+                                                personName, // Show personName
+                                                style: const TextStyle(
+                                                  fontSize: 18,
+                                                  color: Colors.white,
                                                 ),
                                               ),
-                                          if (!isTextFieldVisible)
-                                            Text(
-                                              personName, // Show personName
-                                              style: const TextStyle(
-                                                fontSize: 18,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                     ],
                                   ),

@@ -56,6 +56,9 @@ class ChecklistDataDetailsEntity extends Equatable {
   final String notes;
   final String employeenumber;
   final String headerimageurl;
+  final int versionId;
+  final String documentNo;
+  final String issuedDate;
 
   const ChecklistDataDetailsEntity(
       {required this.seqNo,
@@ -77,7 +80,10 @@ class ChecklistDataDetailsEntity extends Equatable {
       required this.acrhassetoperatorid,
       required this.acrpinspectiontotime,
       required this.employeenumber,
-      required this.headerimageurl});
+      required this.headerimageurl,
+      required this.versionId,
+      required this.documentNo,
+      required this.issuedDate, });
 
   @override
   List<Object?> get props => [
@@ -100,15 +106,16 @@ class ChecklistDataDetailsEntity extends Equatable {
         acrhassetoperatorid,
         acrpinspectiontotime,
         employeenumber,
-        headerimageurl
+        headerimageurl,
+            versionId,documentNo,
+      issuedDate,
       ];
 
   factory ChecklistDataDetailsEntity.fromJson(Map<String, dynamic> json) {
     return ChecklistDataDetailsEntity(
         seqNo: json['acrd_seq_no'],
         checkpoint: json['acrd_checkpoint_description'],
-        acrdcheckpointinspectionresult:
-            json['acrd_checkpoint_inspection_result'],
+        acrdcheckpointinspectionresult: json['acrd_checkpoint_inspection_result'],
         notes: json['acrd_checkpoint_notes'],
         acrhid: json['acrh_id'],
         acrdid: json['acrd_id'],
@@ -125,7 +132,37 @@ class ChecklistDataDetailsEntity extends Equatable {
         acrhassetoperatorid: json['acrh_asset_operator_id'],
         acrpinspectiontotime: json['acrp_inspection_to_time'],
         employeenumber: json['employee_number'],
-        headerimageurl: json['header_image_url']);
+        headerimageurl: json['header_image_url'],
+        versionId:json['acmph_version_id_major'],
+        documentNo:json['acmph_document_ref_no'],
+        issuedDate:json["acmph_issue_date"]
+        );
   }
 }
 
+
+  //  {
+  //         "acrh_id": 5551,
+  //         "acrd_seq_no": 1,
+  //         "acrp_inspection_from_time": "09:00:00",
+  //         "acmph_template_name": "AVCMM Monthly PM",
+  //         "person_fname": "",
+  //         "acrd_checkpoint_description": "Check hydraulic motor for abnormal noise coupling , and amps rating. Check OLR relay setting ",
+  //         "acrd_responsibility_role": 1,
+  //         "acrd_checkpoint_notes": "",
+  //         "acrd_id": 112,
+  //         "acrp_inspection_date": "2024-08-27 00:00:00.0",
+  //         "acrd_checkpoint_status": 1,
+  //         "acrh_asset_operator_id": 0,
+  //         "acrp_inspection_to_time": "11:00:00",
+  //         "acrd_checkpoint_inspection_result": 0,
+  //         "acmph_version_id_major": 12,
+  //         "employee_number": "",
+  //         "acmph_issue_date": "2024-08-24 18:15:21.0",
+  //         "acrp_id": 4672,
+  //         "header_image_url": "http://localhost:8080/btecMaintenance/document_viewimage/suja/",
+  //         "acmph_document_ref_no": "SUJA/ MAINT/F/003",
+  //         "acrh_acmph_id": 222,
+  //         "acrd_acmpd_id": 1315,
+  //         "acrd_method": 6
+  //       },
