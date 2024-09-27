@@ -7,7 +7,7 @@ class CheckListClient {
       clientAuthToken: token,
       apiFor: "get_check_list",
       assetid: id,
-      fromDateTime:  ApiConstant.fromDate,
+      fromDateTime:toDate, 
       toDateTime: toDate,
       
     );

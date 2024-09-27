@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:suja_shoie_app/feature/presentation/pages/barcode_generator_page.dart';
 import 'package:suja_shoie_app/feature/presentation/pages/login_page.dart';
@@ -38,6 +39,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+  //     final screenWidth= MediaQuery.of(context as BuildContext).size.width;
+
+  //     SystemChrome.setPreferredOrientations(
+  // screenWidth < 576
+  //         ? [
+  //             DeviceOrientation.portraitUp,
+  //             DeviceOrientation.portraitDown,
+  //           ]
+  //         : [
+  //             DeviceOrientation.landscapeLeft,
+  //             DeviceOrientation.landscapeRight,
+  //           ],
+  
+  // );
     return MultiProvider(
       
         providers: [

@@ -27,12 +27,12 @@ class _CheklistDropDown extends State<CheklistDropDown> {
     final themeState = Provider.of<ThemeProvider>(context);
     
 final sheetInfoList = [
-   SheetInfo(text: 'Pending', content: AssetListDataTable(context, statuscount: 101)),
+  //  SheetInfo(text: 'Pending', content: AssetListDataTable(context, statuscount: 101)),
   SheetInfo(text: 'Open', content: AssetListDataTable(context, statuscount: 1)),
   SheetInfo(text: 'In Progress', content: AssetListDataTable(context, statuscount: 2)),
   SheetInfo(text: 'Complete', content: AssetListDataTable(context, statuscount: 3)),
-  SheetInfo(text: 'Overdue', content: AssetListDataTable(context, statuscount: 100)),
-  SheetInfo(text: 'Reject', content: AssetListDataTable(context, statuscount: 5)),
+  // SheetInfo(text: 'Overdue', content: AssetListDataTable(context, statuscount: 100)),
+  // SheetInfo(text: 'Reject', content: AssetListDataTable(context, statuscount: 5)),
 ];
 
     return Card(

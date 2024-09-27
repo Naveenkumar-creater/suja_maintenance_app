@@ -17,8 +17,8 @@
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize"
              >
-<!--            
-                   android:screenOrientation="landscape" -->
+           
+                   <!-- android:screenOrientation="landscape" -->
             
          
               

@@ -80,10 +80,158 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
   Map<int, List<DataEntry>> myStatefulWidgetDataMap = {};
   final GlobalKey<FormState> operatorFormKey = GlobalKey<FormState>();
   Map<int, List<Map<String, String>>> EnteredDataPoints = {};
+  bool singleTap = false;
   // void pauseStatus() {
   //   initiatePauseService.initiatePause(context: context, id: widget.planId);
   // }
   List<String> acrdpValues = [];
+
+  // getStatusIcon(int method) {
+  //   if (method == 1) {
+  //     return Image.asset(
+  //       "assets/images/Eye.png",
+  //       fit: BoxFit.cover,
+
+  //       width: 40, // You can set your desired width and height here
+  //       height: 40,
+  //     );
+  //   }  else if (method == 2) {
+  //     return Image.asset(
+  //       "assets/images/Ear.png",
+  //       fit: BoxFit.cover,
+
+  //       width: 40, // You can set your desired width and height here
+  //       height: 40,
+  //     );
+  //   }
+  //   else if (method == 3) {
+  //     return Image.asset(
+  //       "assets/images/Hand.png",
+  //       fit: BoxFit.cover,
+
+  //       width: 40, // You can set your desired width and height here
+  //       height: 40,
+  //     );
+  //   }
+  //   else if (method == 4) {
+  //     return Image.asset(
+  //       "assets/images/Nose.png",
+  //       fit: BoxFit.cover,
+
+  //       width: 40, // You can set your desired width and height here
+  //       height: 40,
+  //     );
+  //   }
+    
+    
+    
+  //    else if (method == 5) {
+  //     return Text(
+  //       "Instrument",
+  //       style: TextStyle(fontSize: 14, color: Colors.black),
+  //     );
+  //   } else if (method == 6) {
+  //     return Text(
+  //       "Operation",
+  //       style: TextStyle(fontSize: 14, color: Colors.black),
+  //     );
+  //   } else if (method == 7) {
+  //     return Text(
+  //       "Spill Kit",
+  //       style: TextStyle(fontSize: 14, color: Colors.black),
+  //     );
+  //   } else if (method == 8) {
+  //     return Text(
+  //       "Waste Cloth",
+  //       style: TextStyle(fontSize: 14, color: Colors.black),
+  //     );
+  //   } else if (method == 9) {
+  //     return Column(
+  //       children: [
+  //         Image.asset(
+  //           "assets/images/Hand.png",
+  //           fit: BoxFit.cover,
+
+  //           width: 40, // You can set your desired width and height here
+  //           height: 40,
+  //         ),
+  //         Image.asset(
+  //           "assets/images/Ear.png",
+  //           fit: BoxFit.cover,
+
+  //           width: 40, // You can set your desired width and height here
+  //           height: 40,
+  //         ),
+  //       ],
+  //     );
+  //   } 
+  //    else if (method == 10) {
+  //     return Column(
+  //       children: [
+  //         Image.asset(
+  //           "assets/images/Eye.png",
+  //           fit: BoxFit.cover,
+
+  //           width: 40, // You can set your desired width and height here
+  //           height: 40,
+  //         ),
+  //         Image.asset(
+  //           "assets/images/Hand.png",
+  //           fit: BoxFit.cover,
+
+  //           width: 40, // You can set your desired width and height here
+  //           height: 40,
+  //         ),
+  //       ],
+  //     );
+  //   }
+    
+  //    else if (method == 11) {
+  //     return Column(
+  //       children: [
+  //         Image.asset(
+  //           "assets/images/Eye.png",
+  //           fit: BoxFit.cover,
+
+  //           width: 40, // You can set your desired width and height here
+  //           height: 40,
+  //         ),
+  //         Image.asset(
+  //           "assets/images/Ear.png",
+  //           fit: BoxFit.cover,
+
+  //           width: 40, // You can set your desired width and height here
+  //           height: 40,
+  //         ),
+  //       ],
+  //     );
+  //   } else if (method == 12) {
+  //     return Image.asset(
+  //       "assets/images/Hand.png",
+  //       fit: BoxFit.cover,
+  //       width: 40, // You can set your desired width and height here
+  //       height: 40,
+  //     );
+  //   } else if (method == 13) {
+  //     return Column(
+  //       children: [
+  //         Text(
+  //           "Operation",
+  //           style: TextStyle(fontSize: 14, color: Colors.black),
+  //         ),
+  //         Image.asset(
+  //           "assets/images/Ear.png",
+  //           fit: BoxFit.cover,
+
+  //           width: 40, // You can set your desired width and height here
+  //           height: 40,
+  //         ),
+  //       ],
+  //     );
+  //   }
+  // }
+
+
 
   getStatusIcon(int method) {
     if (method == 1) {
@@ -94,7 +242,7 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
         width: 40, // You can set your desired width and height here
         height: 40,
       );
-    } else if (method == 2) {
+    }  else if (method == 2) {
       return Image.asset(
         "assets/images/Hand.png",
         fit: BoxFit.cover,
@@ -102,7 +250,8 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
         width: 40, // You can set your desired width and height here
         height: 40,
       );
-    } else if (method == 3) {
+    }
+    else if (method == 3) {
       return Image.asset(
         "assets/images/Ear.png",
         fit: BoxFit.cover,
@@ -110,7 +259,8 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
         width: 40, // You can set your desired width and height here
         height: 40,
       );
-    } else if (method == 4) {
+    }
+    else if (method == 4) {
       return Column(
         children: [
           Image.asset(
@@ -129,7 +279,12 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
           ),
         ],
       );
-    } else if (method == 5) {
+    }
+   
+    
+    
+    
+     else if (method == 5) {
       return Text(
         "Instrument",
         style: TextStyle(fontSize: 14, color: Colors.black),
@@ -168,7 +323,8 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
           ),
         ],
       );
-    } else if (method == 10) {
+    } 
+      else if (method == 10) {
       return Image.asset(
         "assets/images/Nose.png",
         fit: BoxFit.cover,
@@ -176,7 +332,9 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
         width: 40, // You can set your desired width and height here
         height: 40,
       );
-    } else if (method == 11) {
+    }
+    
+     else if (method == 11) {
       return Column(
         children: [
           Image.asset(
@@ -199,7 +357,6 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
       return Image.asset(
         "assets/images/Hand.png",
         fit: BoxFit.cover,
-
         width: 40, // You can set your desired width and height here
         height: 40,
       );
@@ -350,6 +507,8 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
         showDataPointsButton = true;
       } else {
         showDataPointsButton = false;
+
+        
       }
     });
   }
@@ -1182,13 +1341,17 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                                           child: Row(
                                                             children: [
                                                               SizedBox(
-                                                                width: 220,
+                                                                width: 200,
                                                                 child: Text(
                                                                     "${item?.amdpDatapointDescription}  "),
                                                               ),
-                                                             if (item?.amtsLowerRangeValue?.isNotEmpty ?? false)
+                                                               SizedBox(width: 10,),
+                                                              if (item?.amtsLowerRangeValue
+                                                                      ?.isNotEmpty ??
+                                                                  false)
+                                                                 
                                                                 SizedBox(
-                                                                  width: 100,
+                                                                  width: 110,
                                                                   child: Row(
                                                                     children: [
                                                                       Text(
@@ -1200,18 +1363,16 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                                                     ],
                                                                   ),
                                                                 )
-                                                                
                                                               else
                                                                 SizedBox(
-                                                                  width: 100,
+                                                                  width: 110,
                                                                   child: Text(
-                                                                      item?.amtsValue ?? ""  ),
+                                                                      item?.amtsValue ??
+                                                                          ""),
                                                                 ),
                                                               SizedBox(
-                                                                width: 28
-                                                                ,
+                                                                width: 28,
                                                               ),
-                                                              
                                                               SizedBox(
                                                                 width: 150,
                                                                 height:
@@ -1241,15 +1402,36 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                                                               FloatingLabelBehavior.never,
                                                                           contentPadding:
                                                                               EdgeInsets.all(defaultPadding),
+                                                                          errorStyle:
+                                                                              TextStyle(
+                                                                            fontSize:
+                                                                                10.0, // Adjust the font size as needed
+                                                                            height:
+                                                                                0.10, // Adjust the height to control spacing
+                                                                          ),
                                                                           enabledBorder:
                                                                               OutlineInputBorder(
                                                                             borderSide:
                                                                                 BorderSide(
                                                                               color: datapointControllers[index].text.isEmpty
                                                                                   ? Colors.grey
-                                                                                  : ((lowerRangeValue != null && upperRangeValue != null) && isValidInteger(lowerRangeValue) && isValidInteger(upperRangeValue) && (int.tryParse(lowerRangeValue) ?? 0) <= (double.tryParse(datapointControllers[index].text) ?? 0) && (int.tryParse(upperRangeValue!) ?? 0) >= (double.tryParse(datapointControllers[index].text) ?? 0)) || (datapointControllers[index].text == item!.amtsValue) // Compare entered value with expected value
-                                                                                      ? Colors.black
+                                                                                  : (((lowerRangeValue != null && upperRangeValue != null) && isValidInteger(lowerRangeValue) && isValidInteger(upperRangeValue) && (double.tryParse(lowerRangeValue) ?? 0) <= (double.tryParse(datapointControllers[index].text) ?? 0) && (double.tryParse(upperRangeValue!) ?? 0) >= (double.tryParse(datapointControllers[index].text) ?? 0)) || (datapointControllers[index].text == item!.amtsValue) // Compare entered value with expected value
+                                                                                      ) // Compare entered value with expected value
+                                                                                      ? Colors.grey
                                                                                       : Colors.orange, // Border color when focused
+                                                                              width: 2.0, // Border width when focused
+                                                                            ),
+                                                                          ),
+                                                                          border:
+                                                                              OutlineInputBorder(
+                                                                            borderSide:
+                                                                                BorderSide(
+                                                                              color: datapointControllers[index].text.isEmpty
+                                                                                  ? const Color.fromARGB(255, 84, 57, 57)
+                                                                                  : (((lowerRangeValue != null && upperRangeValue != null) && isValidInteger(lowerRangeValue) && isValidInteger(upperRangeValue) && (double.tryParse(lowerRangeValue) ?? 0) <= (double.tryParse(datapointControllers[index].text) ?? 0) && (double.tryParse(upperRangeValue!) ?? 0) >= (double.tryParse(datapointControllers[index].text) ?? 0)) || (datapointControllers[index].text == item!.amtsValue)) // Compare entered value with expected value
+                                                                                      ? Colors.grey
+                                                                                      : Colors.orange,
+
                                                                               width: 2.0, // Border width when focused
                                                                             ),
                                                                           ),
@@ -1258,9 +1440,9 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                                                             borderSide:
                                                                                 BorderSide(
                                                                               color: datapointControllers[index].text.isEmpty
-                                                                                  ? Colors.grey
+                                                                                  ? const Color.fromARGB(255, 84, 57, 57)
                                                                                   : ((lowerRangeValue != null && upperRangeValue != null) && isValidInteger(lowerRangeValue) && isValidInteger(upperRangeValue) && (double.tryParse(lowerRangeValue) ?? 0) <= (double.tryParse(datapointControllers[index].text) ?? 0) && (double.tryParse(upperRangeValue!) ?? 0) >= (double.tryParse(datapointControllers[index].text) ?? 0)) || (datapointControllers[index].text == item!.amtsValue) // Compare entered value with expected value
-                                                                                      ? Colors.black
+                                                                                      ? Colors.grey
                                                                                       : Colors.orange,
 
                                                                               width: 2.0, // Border width when focused
@@ -1712,7 +1894,7 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
           if (headerImage != null) {
             try {
               imageWidget = Image.network(
-                checklist!.first.headerimageurl,
+                checklist.first.headerimageurl,
                 width: 100, // Set the width as needed
                 height: 50, // Set the height as needed
                 fit: BoxFit.cover,
@@ -1802,8 +1984,11 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                         height: 20,
                                       ),
                                       Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text(
+                                          Container(
+                                            child: Row(children: [
+                                                      Text(
                                             widget.assetname ?? "",
                                             style: const TextStyle(
                                               fontSize: 20,
@@ -1811,7 +1996,7 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                               color: Colors.white,
                                             ),
                                           ),
-                                          SizedBox(
+                                           SizedBox(
                                             width: 10,
                                           ),
                                           Text(
@@ -1825,23 +2010,7 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                           SizedBox(
                                             width: 10,
                                           ),
-                                          if (widget.acrpinspectionstatus == 1)
-                                            Container(
-                                              height: 30,
-                                              width: 75,
-                                              decoration: BoxDecoration(
-                                                  color: Colors.red,
-                                                  borderRadius:
-                                                      BorderRadius.circular(6)),
-                                              padding: EdgeInsets.all(6),
-                                              child: Text(
-                                                "Overdue",
-                                                style: TextStyle(
-                                                    fontSize: 16,
-                                                    color: Colors.black),
-                                              ),
-                                            ),
-                                          if (widget.acrpinspectionstatus == 2)
+                                           if (widget.acrpinspectionstatus == 2)
                                             Container(
                                               height: 35,
                                               width: 100,
@@ -1856,8 +2025,9 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                                     fontSize: 16,
                                                     color: Colors.black),
                                               ),
-                                            ),
-                                          if (widget.acrpinspectionstatus ==
+                                            )
+                                          else if (widget
+                                                      .acrpinspectionstatus ==
                                                   3 ||
                                               widget.acrpinspectionstatus == 4)
                                             Container(
@@ -1874,8 +2044,9 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                                     fontSize: 16,
                                                     color: Colors.black),
                                               ),
-                                            ),
-                                          if (widget.acrpinspectionstatus ==
+                                            )
+                                          else if (widget
+                                                      .acrpinspectionstatus ==
                                                   1 &&
                                               inspectiondate == currentdate)
                                             Container(
@@ -1893,8 +2064,63 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                                     color: Colors.black),
                                               ),
                                             ),
+                                            SizedBox(width:20),
+                                        
+                                                                                                       SizedBox(width:20),
+
+                                            Row(
+                                                children: [
+                                                     Text(
+                                                  "Ref No - ",
+                                                  style: const TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white,
+                                                  ),
+                                                                                        ),
+                                                  Text(
+                                                  "${checklist.first.documentNo ?? 0}",
+                                                  style: const TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white,
+                                                  ),
+                                                                                        ),
+                                                ],
+                                                                                          ),
+                                            ]
+                                            
+                                            ),
+
+                                          ),
+
+                                  
+                                         
+                          
+                                           
+                                          // if (widget.acrpinspectionstatus == 1)
+                                          //   Container(
+                                          //     height: 30,
+                                          //     width: 75,
+                                          //     decoration: BoxDecoration(
+                                          //         color: Colors.red,
+                                          //         borderRadius:
+                                          //             BorderRadius.circular(6))
+                                          //     padding: EdgeInsets.all(6),
+                                          //     child: Text(
+                                          //       "Overdue",
+                                          //       style: TextStyle(
+                                          //           fontSize: 16,
+                                          //           color: Colors.black),
+                                          //     ),
+                                          //   )
+                                         
                                         ],
                                       ),
+
+
+
+
 
                                       //                                widget.pageId == 1?
 
@@ -1914,151 +2140,174 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                       //                                 ),
                                       //                               ),
 
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            chekListname,
-                                            style: const TextStyle(
-                                              fontSize: 25,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
+                                      Container(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              chekListname,
+                                              style: const TextStyle(
+                                                fontSize: 25,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                              ),
                                             ),
-                                          ),
-                                          if (isTextFieldVisible)
-                                            // Show TextField conditionally
-                                            if (widget.acrpinspectionstatus ==
-                                                    3 ||
-                                                widget.acrpinspectionstatus ==
-                                                    4)
-                                              Text(
-                                                checklist.first.personfname,
-                                                style: const TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.white,
-                                                ),
-                                              )
-                                            else
-                                              SizedBox(
-                                                width: 300,
-                                                height: 50,
-                                                child: Row(
-                                                  children: [
-                                                    Expanded(
-                                                      child: Form(
-                                                        key: operatorFormKey,
-                                                        child: Container(
-                                                          margin: const EdgeInsets
-                                                                  .only(
-                                                              left:
-                                                                  defaultPadding *
-                                                                      2),
-                                                          decoration: const BoxDecoration(
-                                                              borderRadius: BorderRadius
-                                                                  .all(Radius
-                                                                      .circular(
-                                                                          5))),
-                                                          child: TextFormField(
-                                                            controller:
-                                                                numberController,
-                                                            style:
-                                                                const TextStyle(
-                                                                    color: Colors
-                                                                        .black),
-                                                            validator: (value) {
-                                                              if (value ==
-                                                                      null ||
-                                                                  value
-                                                                      .isEmpty) {
-                                                                return 'Please enter Operator Id';
-                                                              }
-                                                              if (value.contains(
-                                                                  RegExp(
-                                                                      r'[!@#$%^&*(),.?":{}|<>]'))) {
-                                                                return 'Operator Id cannot contain special symbols';
-                                                              }
-                                                              if (value
-                                                                  .contains(
-                                                                      ' ')) {
-                                                                return 'Operator Id cannot contain spaces';
-                                                              }
-                                                              return null;
-                                                            },
-                                                            decoration:
-                                                                InputDecoration(
-                                                              hintText:
-                                                                  'Enter Operator Id',
-                                                              hintStyle: const TextStyle(
-                                                                  color: Colors
-                                                                      .black45),
-                                                              filled: true,
-                                                              fillColor:
-                                                                  Colors.white,
-                                                              labelStyle:
+
+                                                 Row(
+                                                children: [
+                                                     Text(
+                                                  "Revison No - ",
+                                                  style: const TextStyle(
+                                                    fontSize:20,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white,
+                                                  ),
+                                                                                        ),
+                                                  Text(
+                                                  "${checklist.first.versionId ?? 0}",
+                                                  style: const TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white,
+                                                  ),
+                                                                                        ),
+                                                ],
+                                                                                          ),
+                                            if (isTextFieldVisible)
+                                              // Show TextField conditionally
+                                              if (widget.acrpinspectionstatus ==
+                                                      3 ||
+                                                  widget.acrpinspectionstatus ==
+                                                      4)
+                                                Text(
+                                                  checklist.first.personfname,
+                                                  style: const TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white,
+                                                  ),
+                                                )
+                                              else
+                                                SizedBox(
+                                                  width: 300,
+                                                  height: 50,
+                                                  child: Row(
+                                                    children: [
+                                                      Expanded(
+                                                        child: Form(
+                                                          key: operatorFormKey,
+                                                          child: Container(
+                                                            margin: const EdgeInsets
+                                                                    .only(
+                                                                left:
+                                                                    defaultPadding *
+                                                                        2),
+                                                            decoration: const BoxDecoration(
+                                                                borderRadius: BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            5))),
+                                                            child: TextFormField(
+                                                              controller:
+                                                                  numberController,
+                                                              style:
                                                                   const TextStyle(
-                                                                      fontSize:
-                                                                          12),
-                                                              contentPadding:
-                                                                  const EdgeInsets
-                                                                          .only(
-                                                                      left: 20),
-                                                              enabledBorder:
-                                                                  OutlineInputBorder(
-                                                                borderSide: BorderSide(
+                                                                      color: Colors
+                                                                          .black),
+                                                              validator: (value) {
+                                                                if (value ==
+                                                                        null ||
+                                                                    value
+                                                                        .isEmpty) {
+                                                                  return 'Please enter Operator Id';
+                                                                }
+                                                                if (value.contains(
+                                                                    RegExp(
+                                                                        r'[!@#$%^&*(),.?":{}|<>]'))) {
+                                                                  return 'Operator Id cannot contain special symbols';
+                                                                }
+                                                                if (value
+                                                                    .contains(
+                                                                        ' ')) {
+                                                                  return 'Operator Id cannot contain spaces';
+                                                                }
+                                                                return null;
+                                                              },
+                                                              decoration:
+                                                                  InputDecoration(
+                                                                hintText:
+                                                                    'Enter Operator Id',
+                                                                hintStyle: const TextStyle(
                                                                     color: Colors
-                                                                        .blueGrey
-                                                                        .shade50),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            5),
-                                                              ),
-                                                              focusedBorder:
-                                                                  OutlineInputBorder(
-                                                                borderSide: BorderSide(
-                                                                    color: Colors
-                                                                        .blueGrey
-                                                                        .shade50),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            5),
+                                                                        .black45),
+                                                                filled: true,
+                                                                fillColor:
+                                                                    Colors.white,
+                                                                labelStyle:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            12),
+                                                                contentPadding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        left: 20),
+                                                                enabledBorder:
+                                                                    OutlineInputBorder(
+                                                                  borderSide: BorderSide(
+                                                                      color: Colors
+                                                                          .blueGrey
+                                                                          .shade50),
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              5),
+                                                                ),
+                                                                focusedBorder:
+                                                                    OutlineInputBorder(
+                                                                  borderSide: BorderSide(
+                                                                      color: Colors
+                                                                          .blueGrey
+                                                                          .shade50),
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              5),
+                                                                ),
                                                               ),
                                                             ),
                                                           ),
                                                         ),
                                                       ),
-                                                    ),
-                                                    TextButton(
-                                                      onPressed: () {
-                                                        if (operatorFormKey
-                                                                .currentState
-                                                                ?.validate() ==
-                                                            true) {
-                                                          handleSubmit();
-                                                        }
-                                                      },
-                                                      child: const Text(
-                                                        'OK',
-                                                        style: TextStyle(
-                                                          color: Colors.white,
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          if (operatorFormKey
+                                                                  .currentState
+                                                                  ?.validate() ==
+                                                              true) {
+                                                            handleSubmit();
+                                                          }
+                                                        },
+                                                        child: const Text(
+                                                          'OK',
+                                                          style: TextStyle(
+                                                            color: Colors.white,
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  ],
+                                                    ],
+                                                  ),
+                                                ),
+                                            if (!isTextFieldVisible)
+                                              Text(
+                                                personName, // Show personName
+                                                style: const TextStyle(
+                                                  fontSize: 18,
+                                                  color: Colors.white,
                                                 ),
                                               ),
-                                          if (!isTextFieldVisible)
-                                            Text(
-                                              personName, // Show personName
-                                              style: const TextStyle(
-                                                fontSize: 18,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -2272,13 +2521,17 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                                                 .center,
                                                         children: [
                                                           ElevatedButton(
-                                                            onPressed: () {
-                                                              _showPopup(
+                                                            onPressed: () async{
+                                                              if (!singleTap) {
+            singleTap = true;
+            Future.delayed(const Duration(seconds: 2)).then((value) => singleTap = false);
+                                                             await  _showPopup(
                                                                   context,
                                                                   index);
+                                                            }
                                                             },
                                                             child: const Text(
-                                                              "Add Inputs",
+                                                              "Add Input",
                                                               style: TextStyle(
                                                                 fontSize: 13,
                                                               ),
@@ -2305,30 +2558,29 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                     onPressed: () async {
                                       if (personName.isNotEmpty &&
                                           !isTextFieldVisible) {
-                                        try {
-                                          final response =
-                                              await submitChecklist(context,
-                                                  "submit_checklist", 2);
-                                          if (response['response_code'] == 4 ||
-                                              response['response_code'] == 5 ||
-                                              response['response_code'] == 6) {
-                                            ShowError.showAlert(context,
-                                                response['response_msg']);
-                                          } else {
-                                            // If response_code is not 4, 5, or 6, proceed to _navigateBack()
-                                            _navigateBack();
-                                          }
-                                        } catch (error) {
-                                          // Handle and show the error message here
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            SnackBar(
-                                              content: Text(error.toString()),
-                                              backgroundColor: Colors.amber,
-                                            ),
-                                          );
+                                      try {
+                                        final response = await submitChecklist(
+                                            context, "submit_checklist", 2);
+                                        if (response['response_code'] == 4 ||
+                                            response['response_code'] == 5 ||
+                                            response['response_code'] == 6) {
+                                          ShowError.showAlert(context,
+                                              response['response_msg']);
+                                        } else {
+                                          // If response_code is not 4, 5, or 6, proceed to _navigateBack()
+                                          _navigateBack();
                                         }
+                                      } catch (error) {
+                                        // Handle and show the error message here
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(error.toString()),
+                                            backgroundColor: Colors.amber,
+                                          ),
+                                        );
                                       }
+                                          }
                                     },
                                     style: ElevatedButton.styleFrom(
                                       foregroundColor: Colors.white,
