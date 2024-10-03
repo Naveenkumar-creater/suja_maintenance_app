@@ -14,7 +14,7 @@ String getStatusText(int checklistStatus, String inspection) {
   String nowDateStr = "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
 
   // Compare checklistStatus and the inspection date
-  if (checklistStatus == 1 && inspectionDateStr == nowDateStr) {
+  if (checklistStatus == 1) {
     return "Open";
   } else if (checklistStatus == 2 ) {
     return "In Progress";
@@ -23,10 +23,24 @@ String getStatusText(int checklistStatus, String inspection) {
   } 
   else if (checklistStatus == 5 ) {
     return "Rejected";
-  }else  {
+  }
+  else  {
     return "Overdue";
   }
 }
+//   if (checklistStatus == 1 && inspectionDateStr == nowDateStr) {
+//     return "Open";
+//   } else if (checklistStatus == 2 ) {
+//     return "In Progress";
+//   } else if (checklistStatus == 3||checklistStatus == 4 ) {
+//     return "Complete";
+//   } 
+//   else if (checklistStatus == 5 ) {
+//     return "Rejected";
+//   }else  {
+//     return "Overdue";
+//   }
+// }
 
 
   Color getStatusColor(int checklistStatus, String inspection) {
@@ -40,7 +54,7 @@ String getStatusText(int checklistStatus, String inspection) {
   String nowDateStr = "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
 
   // Compare checklistStatus and the inspection date
-  if (checklistStatus == 1 && inspectionDateStr == nowDateStr) {
+  if (checklistStatus == 1) {
      return Colors.blue;
   } else if (checklistStatus == 2 ) {
      return Colors.orange;
@@ -50,10 +64,32 @@ String getStatusText(int checklistStatus, String inspection) {
   
   else if (checklistStatus == 5 ) {
     return Colors.black;
-  }else 
+  }
+  
+  else 
   {
   return Colors.red;
   } 
+
+
+// if (checklistStatus == 1 && inspectionDateStr == nowDateStr) {
+//      return Colors.blue;
+//   } else if (checklistStatus == 2 ) {
+//      return Colors.orange;
+//   } else if (checklistStatus == 3||checklistStatus == 4 ) {
+//     return Colors.green;
+//   } 
+  
+//   else if (checklistStatus == 5 ) {
+//     return Colors.black;
+//   }
+  
+//   else 
+//   {
+//   return Colors.red;
+//   } 
+
+
 }
 
 

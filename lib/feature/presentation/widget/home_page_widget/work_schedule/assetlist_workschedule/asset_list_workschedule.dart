@@ -146,6 +146,7 @@ Future<void> _fetchCheckList() async {
                           mainAxisAlignment: MainAxisAlignment.end,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            
                             ChecklistWidget(
                               checklist: checklist,
                               assetId: widget.assetId,
