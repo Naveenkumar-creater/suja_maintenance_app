@@ -52,6 +52,7 @@ dependencies:
   http: ^1.1.0
   fvm: ^2.4.1
   flutter_svg: ^2.0.10+1
+  auto_size_text: ^3.0.0
   
   
 

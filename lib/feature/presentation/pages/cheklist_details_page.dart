@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
@@ -246,7 +247,6 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
       return Image.asset(
         "assets/images/Hand.png",
         fit: BoxFit.cover,
-
         width: 40, // You can set your desired width and height here
         height: 40,
       );
@@ -328,7 +328,6 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
       return Image.asset(
         "assets/images/Nose.png",
         fit: BoxFit.cover,
-
         width: 40, // You can set your desired width and height here
         height: 40,
       );
@@ -1410,44 +1409,68 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                                                                 0.10, // Adjust the height to control spacing
                                                                           ),
                                                                           enabledBorder:
-                                                                              OutlineInputBorder(
-                                                                            borderSide:
-                                                                                BorderSide(
-                                                                              color: datapointControllers[index].text.isEmpty
-                                                                                  ? Colors.grey
-                                                                                  : (((lowerRangeValue != null && upperRangeValue != null) && isValidInteger(lowerRangeValue) && isValidInteger(upperRangeValue) && (double.tryParse(lowerRangeValue) ?? 0) <= (double.tryParse(datapointControllers[index].text) ?? 0) && (double.tryParse(upperRangeValue!) ?? 0) >= (double.tryParse(datapointControllers[index].text) ?? 0)) || (datapointControllers[index].text == item!.amtsValue) // Compare entered value with expected value
-                                                                                      ) // Compare entered value with expected value
-                                                                                      ? Colors.grey
-                                                                                      : Colors.orange, // Border color when focused
-                                                                              width: 2.0, // Border width when focused
-                                                                            ),
-                                                                          ),
+                                                                             OutlineInputBorder(
+  borderSide: BorderSide(
+    color: (lowerRangeValue == '0' || lowerRangeValue?.isEmpty == true) &&
+            (upperRangeValue == '0' || upperRangeValue?.isEmpty == true) &&
+            (item?.amtsValue == '0' || item?.amtsValue?.isEmpty == true)
+        ? Colors.grey // Skip validation if all values are 0 or empty
+        : datapointControllers[index].text.isEmpty
+            ? Colors.grey
+            : (((lowerRangeValue != null && upperRangeValue != null && item?.amtsValue != null) &&
+                isValidInteger(lowerRangeValue) &&
+                isValidInteger(upperRangeValue) &&
+                (double.tryParse(lowerRangeValue) ?? 0) <= (double.tryParse(datapointControllers[index].text) ?? 0) &&
+                (double.tryParse(upperRangeValue!) ?? 0) >= (double.tryParse(datapointControllers[index].text) ?? 0)) ||
+                (datapointControllers[index].text == item!.amtsValue))
+              ? Colors.grey
+              : Colors.orange, // Border color when validation fails
+    width: 2.0, // Border width when focused
+  ),
+),
+
                                                                           border:
-                                                                              OutlineInputBorder(
-                                                                            borderSide:
-                                                                                BorderSide(
-                                                                              color: datapointControllers[index].text.isEmpty
-                                                                                  ? const Color.fromARGB(255, 84, 57, 57)
-                                                                                  : (((lowerRangeValue != null && upperRangeValue != null) && isValidInteger(lowerRangeValue) && isValidInteger(upperRangeValue) && (double.tryParse(lowerRangeValue) ?? 0) <= (double.tryParse(datapointControllers[index].text) ?? 0) && (double.tryParse(upperRangeValue!) ?? 0) >= (double.tryParse(datapointControllers[index].text) ?? 0)) || (datapointControllers[index].text == item!.amtsValue)) // Compare entered value with expected value
-                                                                                      ? Colors.grey
-                                                                                      : Colors.orange,
+                                                                            OutlineInputBorder(
+  borderSide: BorderSide(
+    color: (lowerRangeValue == '0' || lowerRangeValue?.isEmpty == true) &&
+            (upperRangeValue == '0' || upperRangeValue?.isEmpty == true) &&
+            (item?.amtsValue == '0' || item?.amtsValue?.isEmpty == true)
+        ? Colors.grey // Skip validation if all values are 0 or empty
+        : datapointControllers[index].text.isEmpty
+            ? Colors.grey
+            : (((lowerRangeValue != null && upperRangeValue != null && item?.amtsValue != null) &&
+                isValidInteger(lowerRangeValue) &&
+                isValidInteger(upperRangeValue) &&
+                (double.tryParse(lowerRangeValue) ?? 0) <= (double.tryParse(datapointControllers[index].text) ?? 0) &&
+                (double.tryParse(upperRangeValue!) ?? 0) >= (double.tryParse(datapointControllers[index].text) ?? 0)) ||
+                (datapointControllers[index].text == item!.amtsValue))
+              ? Colors.grey
+              : Colors.orange, // Border color when validation fails
+    width: 2.0, // Border width when focused
+  ),
+),
 
-                                                                              width: 2.0, // Border width when focused
-                                                                            ),
-                                                                          ),
                                                                           focusedBorder:
-                                                                              OutlineInputBorder(
-                                                                            borderSide:
-                                                                                BorderSide(
-                                                                              color: datapointControllers[index].text.isEmpty
-                                                                                  ? const Color.fromARGB(255, 84, 57, 57)
-                                                                                  : ((lowerRangeValue != null && upperRangeValue != null) && isValidInteger(lowerRangeValue) && isValidInteger(upperRangeValue) && (double.tryParse(lowerRangeValue) ?? 0) <= (double.tryParse(datapointControllers[index].text) ?? 0) && (double.tryParse(upperRangeValue!) ?? 0) >= (double.tryParse(datapointControllers[index].text) ?? 0)) || (datapointControllers[index].text == item!.amtsValue) // Compare entered value with expected value
-                                                                                      ? Colors.grey
-                                                                                      : Colors.orange,
+                                                                           OutlineInputBorder(
+  borderSide: BorderSide(
+    color: (lowerRangeValue == '0' || lowerRangeValue?.isEmpty == true) &&
+            (upperRangeValue == '0' || upperRangeValue?.isEmpty == true) &&
+            (item?.amtsValue == '0' || item?.amtsValue?.isEmpty == true)
+        ? Colors.grey // Skip validation if all values are 0 or empty
+        : datapointControllers[index].text.isEmpty
+            ? Colors.grey
+            : (((lowerRangeValue != null && upperRangeValue != null && item?.amtsValue != null) &&
+                isValidInteger(lowerRangeValue) &&
+                isValidInteger(upperRangeValue) &&
+                (double.tryParse(lowerRangeValue) ?? 0) <= (double.tryParse(datapointControllers[index].text) ?? 0) &&
+                (double.tryParse(upperRangeValue!) ?? 0) >= (double.tryParse(datapointControllers[index].text) ?? 0)) ||
+                (datapointControllers[index].text == item!.amtsValue))
+              ? Colors.grey
+              : Colors.orange, // Border color when validation fails
+    width: 2.0, // Border width when focused
+  ),
+),
 
-                                                                              width: 2.0, // Border width when focused
-                                                                            ),
-                                                                          ),
                                                                           hintText: dataPointValues.isNotEmpty
                                                                               ? 'Enter Value'
                                                                               : '',
@@ -1479,14 +1502,21 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                                                         },
                                                                       ),
                                                                     ),
+                                                                  (  ((lowerRangeValue == '0' || lowerRangeValue?.isEmpty == true) &&
+            (upperRangeValue == '0' || upperRangeValue?.isEmpty == true) &&
+            (item?.amtsValue == '0' || item?.amtsValue?.isEmpty == true))||
+        
                                                                     datapointControllers[index]
                                                                             .text
-                                                                            .isEmpty
+                                                                            .isEmpty)
                                                                         ? Text(
                                                                             "")
-                                                                        : (((lowerRangeValue != null && upperRangeValue != null) && isValidInteger(lowerRangeValue) && isValidInteger(upperRangeValue) && (double.tryParse(lowerRangeValue) ?? 0) <= (double.tryParse(datapointControllers[index].text) ?? 0) && (double.tryParse(upperRangeValue!) ?? 0) >= (double.tryParse(datapointControllers[index].text) ?? 0)) ||
+                                                                        : (((lowerRangeValue != null && upperRangeValue != null) && isValidInteger(lowerRangeValue) &&
+                                                                         isValidInteger(upperRangeValue) && (double.tryParse(lowerRangeValue) ?? 0) <= 
+                                                                        (double.tryParse(datapointControllers[index].text) ?? 0) && (double.tryParse(upperRangeValue!) ?? 0) >= 
+                                                                        (double.tryParse(datapointControllers[index].text) ?? 0)) ||
                                                                                 (datapointControllers[index].text == item!.amtsValue) // Compare entered value with expected value
-                                                                            )
+                            )
                                                                             ? Text('')
                                                                             : Text(
                                                                                 "Value out of Spec",
@@ -1495,10 +1525,13 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                                                   ],
                                                                 ),
                                                               ),
-                                                              datapointControllers[
-                                                                          index]
-                                                                      .text
-                                                                      .isEmpty
+                                                             (  ((lowerRangeValue == '0' || lowerRangeValue?.isEmpty == true) &&
+            (upperRangeValue == '0' || upperRangeValue?.isEmpty == true) &&
+            (item?.amtsValue == '0' || item?.amtsValue?.isEmpty == true))||
+        
+                                                                    datapointControllers[index]
+                                                                            .text
+                                                                            .isEmpty)
                                                                   ? Text("")
                                                                   : (((lowerRangeValue != null && upperRangeValue != null) &&
                                                                               isValidInteger(lowerRangeValue) &&
@@ -1635,11 +1668,11 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                       for (int i = 0;
                                           i < acrdpValues.length;
                                           i++) {
-                                        if (((((datalowerRangeValue[i]
+                                        if (((((datalowerRangeValue[i]=='0'||datalowerRangeValue[i]
                                                         .isEmpty) &&
-                                                    (datahigherRangeValue[i]
+                                                    (datahigherRangeValue[i]=="0"||datahigherRangeValue[i]
                                                         .isEmpty) &&
-                                                    (dataamtsValue[i]
+                                                    (dataamtsValue[i]== "0"||dataamtsValue[i]
                                                         .isEmpty)) ||
                                                 isValidInteger(datalowerRangeValue[i]) &&
                                                     isValidInteger(
@@ -1960,7 +1993,7 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                     },
                     child: Scaffold(
                         appBar: AppBar(
-                          automaticallyImplyLeading: true,
+                          automaticallyImplyLeading: false,
                           iconTheme: const IconThemeData(
                             color: Colors.white,
                           ),
@@ -1973,7 +2006,7 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                   : const Color(0xFF25476A),
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 18),
-                              height: 160,
+                              height: 180,
                               child: SafeArea(
                                 child: Center(
                                   child: Column(
@@ -1987,26 +2020,32 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Container(
-                                            child: Row(children: [
-                                                      Text(
-                                            widget.assetname ?? "",
-                                            style: const TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
-                                            ),
-                                          ),
+                                            child: Row(
+                                              
+                                              children: [
+
+                                                
+                                                      AutoSizeText(
+                                                                                                widget.assetname ?? "",
+                                                                                                maxLines: 2,
+                                                                                                style:  TextStyle(
+                                                                                                  fontSize: 20,
+                                                                                                  overflow: TextOverflow.ellipsis,
+                                                                                                  fontWeight: FontWeight.bold,
+                                                                                                  color: Colors.white,
+                                                                                                ),
+                                                                                              ),
                                            SizedBox(
                                             width: 10,
                                           ),
-                                          Text(
-                                            inspectiondate ?? "",
-                                            style: const TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
-                                            ),
-                                          ),
+                                      Text(
+                                        inspectiondate ?? "",
+                                        style: const TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
                                           SizedBox(
                                             width: 10,
                                           ),
@@ -2051,7 +2090,7 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                               inspectiondate == currentdate)
                                             Container(
                                               height: 30,
-                                              width: 75,
+                                              width: 100,
                                               decoration: BoxDecoration(
                                                   color: Colors.blue,
                                                   borderRadius:
@@ -2064,7 +2103,6 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                                     color: Colors.black),
                                               ),
                                             ),
-                                            SizedBox(width:20),
                                         
                                                                                                        SizedBox(width:20),
 
@@ -2078,14 +2116,21 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                                     color: Colors.white,
                                                   ),
                                                                                         ),
-                                                  Text(
-                                                  "${checklist.first.documentNo ?? 0}",
-                                                  style: const TextStyle(
-                                                    fontSize: 18,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.white,
+                                                  SizedBox(
+                                                    width: 150,
+                                                    child: AutoSizeText(
+                                                    "${checklist.first.documentNo ?? 0}",
+                                                    maxFontSize: 20,
+                                                    minFontSize: 18,
+                                                    maxLines: 1,
+                                                    style: const TextStyle(
+                                                      fontSize: 20,
+                                                      fontWeight: FontWeight.bold,
+                                                      color: Colors.white,
+                                                      overflow: TextOverflow.ellipsis
+                                                    ),
+                                                                                          ),
                                                   ),
-                                                                                        ),
                                                 ],
                                                                                           ),
                                             ]
@@ -2145,42 +2190,51 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text(
-                                              chekListname,
-                                              style: const TextStyle(
-                                                fontSize: 25,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white,
+                                            Expanded(
+                                              flex: 3,
+                                              child: AutoSizeText(
+                                                chekListname,
+                                                maxFontSize: 25,
+                                                minFontSize: 20,
+                                                maxLines: 2,
+                                                style: const TextStyle(
+                                                  fontSize: 25,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white,
+                                                ),
                                               ),
                                             ),
-
-                                                 Row(
-                                                children: [
-                                                     Text(
-                                                  "Revison No - ",
-                                                  style: const TextStyle(
-                                                    fontSize:20,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.white,
-                                                  ),
-                                                                                        ),
-                                                  Text(
-                                                  "${checklist.first.versionId ?? 0}",
-                                                  style: const TextStyle(
-                                                    fontSize: 18,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.white,
-                                                  ),
-                                                                                        ),
-                                                ],
+SizedBox(width: 10,),
+                                                 Expanded(
+                                                  flex: 2,
+                                                   child: Row(
+                                                                                                 children: [
+                                                       Text(
+                                                    "Revison No - ",
+                                                    style: const TextStyle(
+                                                      fontSize:20,
+                                                      fontWeight: FontWeight.bold,
+                                                      color: Colors.white,
+                                                    ),
                                                                                           ),
+                                                    Text(
+                                                    "${checklist.first.versionId ?? 0}",
+                                                    style: const TextStyle(
+                                                      fontSize: 18,
+                                                      fontWeight: FontWeight.bold,
+                                                      color: Colors.white,
+                                                    ),
+                                                                                          ),
+                                                                                                 ],
+                                                                                            ),
+                                                 ),
                                             if (isTextFieldVisible)
                                               // Show TextField conditionally
                                               if (widget.acrpinspectionstatus ==
                                                       3 ||
                                                   widget.acrpinspectionstatus ==
                                                       4)
-                                                Text(
+                                                  Text(
                                                   checklist.first.personfname,
                                                   style: const TextStyle(
                                                     fontSize: 20,
@@ -2189,12 +2243,12 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                                   ),
                                                 )
                                               else
-                                                SizedBox(
-                                                  width: 300,
-                                                  height: 50,
+                                                Expanded(
+                                                  flex: 3,
                                                   child: Row(
                                                     children: [
                                                       Expanded(
+
                                                         child: Form(
                                                           key: operatorFormKey,
                                                           child: Container(
@@ -2247,7 +2301,7 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                                                 labelStyle:
                                                                     const TextStyle(
                                                                         fontSize:
-                                                                            12),
+                                                                            10),
                                                                 contentPadding:
                                                                     const EdgeInsets
                                                                             .only(
@@ -2405,10 +2459,13 @@ class _CheckPointDetailsState extends State<CheckPointDetails> {
                                               Expanded(
                                                 flex: 4,
                                                 child: ListTile(
-                                                  title: Text(
+                                                  title: AutoSizeText(
                                                     decodedTamilText,
+                                                    maxLines: 10,
                                                     style: const TextStyle(
-                                                        fontSize: 14),
+                                                        fontSize: 14,
+                                                        overflow: TextOverflow.ellipsis
+                                                        ),
                                                   ),
                                                 ),
                                               ),

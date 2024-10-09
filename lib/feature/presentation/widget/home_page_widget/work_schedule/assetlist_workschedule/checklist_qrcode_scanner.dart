@@ -43,13 +43,11 @@ class _QRCodeScannerPageState extends State<QRCodeScannerPage> {
       if (barcode == widget.expectedBarcode) {
         setState(() {
           scannedBarcode = "Matched: $barcode";
-          
+  
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => CaptureImage(context, widget.plantId,assetIdPage,widget.acrpinspectionstatus,widget.assetId,widget.assetname),
-              
-           
             ),
           );
         });
